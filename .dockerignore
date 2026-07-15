@@ -4,4 +4,3 @@ dist
 .gitignore
 Dockerfile
 Dockerfile.dev
-nginx.conf
