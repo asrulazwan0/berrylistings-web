@@ -1,0 +1,76 @@
+/* ==========================================================================
+   Berry Listings -- Login page styles
+   Ported from berrylistings-ui/login.html inline styles
+   ========================================================================== */
+
+.auth-wrap {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: calc(100dvh - var(--nav-height));
+}
+
+@media (min-width: 900px) {
+  .auth-wrap {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.auth-visual {
+  display: none;
+  position: relative;
+  background:
+    linear-gradient(155deg, rgba(36, 17, 8, 0.82), rgba(36, 17, 8, 0.16) 70%),
+    url('../assets/auth-bg.jpg') center / cover;
+  color: #fdf5ee;
+  padding: var(--space-9);
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+@media (min-width: 900px) {
+  .auth-visual {
+    display: flex;
+  }
+}
+
+.auth-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  padding: var(--space-7);
+}
+
+.google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: 52px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  cursor: pointer;
+  transition:
+    box-shadow var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
+}
+
+.google-btn:hover {
+  box-shadow: var(--shadow-sm);
+  border-color: var(--color-border-strong);
+}
+
+.google-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.68;
+}
