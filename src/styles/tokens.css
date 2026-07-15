@@ -1,0 +1,116 @@
+/* ==========================================================================
+   Berry Listings -- Design Tokens (CSS custom properties)
+   Ported from berrylistings-ui/css/tokens.css
+   Direction: "Berry Editorial" -- warm, photography-forward, magazine grid
+   ========================================================================== */
+
+:root {
+  color-scheme: light dark;
+
+  /* ---- Color: brand ---- */
+  --color-primary: #7c2d12;
+  --color-primary-dark: #4f1c0a;
+  --color-primary-light: #a8431c;
+  --color-accent: #a16207;
+  --color-accent-light: #d9a441;
+
+  /* ---- Color: neutrals & surfaces ---- */
+  --color-bg: #fbf6f1;
+  --color-bg-alt: #f5ece3;
+  --color-surface: #ffffff;
+  --color-surface-sunken: #f2e9e0;
+  --color-border: #e6d9cb;
+  --color-border-strong: #d8c4ac;
+
+  /* ---- Color: text ---- */
+  --color-fg: #2b1810;
+  --color-fg-muted: #6b5b52;
+  --color-fg-subtle: #97887d;
+  --color-on-primary: #fdf5ee;
+
+  /* ---- Color: semantic ---- */
+  --color-success: #166534;
+  --color-success-bg: #eaf5ec;
+  --color-destructive: #b91c1c;
+  --color-destructive-bg: #fdecec;
+  --color-ring: #7c2d12;
+  --color-nav: rgba(251, 246, 241, 0.92);
+  --color-overlay: rgba(43, 24, 16, 0.48);
+
+  /* ---- Typography ---- */
+  --font-display: 'Cinzel', 'Georgia', serif;
+  --font-body: 'Josefin Sans', 'Helvetica Neue', Arial, sans-serif;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-md: 1.125rem;
+  --text-lg: 1.375rem;
+  --text-xl: 1.75rem;
+  --text-2xl: 2.25rem;
+  --text-3xl: 3rem;
+  --text-4xl: clamp(2.75rem, 6vw, 4.5rem);
+
+  --leading-tight: 1.15;
+  --leading-snug: 1.35;
+  --leading-normal: 1.6;
+
+  /* ---- Spacing (4/8 rhythm) ---- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --space-10: 8rem;
+
+  /* ---- Radius ---- */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-full: 999px;
+
+  /* ---- Shadow (soft, warm-tinted) ---- */
+  --shadow-sm: 0 1px 2px rgba(43, 24, 16, 0.06);
+  --shadow-md: 0 8px 24px -8px rgba(43, 24, 16, 0.16);
+  --shadow-lg: 0 20px 48px -12px rgba(43, 24, 16, 0.22);
+
+  /* ---- Layout ---- */
+  --container-max: 1240px;
+  --nav-height: 76px;
+
+  /* ---- Motion ---- */
+  --duration-fast: 150ms;
+  --duration-base: 220ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #1c120c;
+    --color-bg-alt: #241811;
+    --color-surface: #2a1c14;
+    --color-surface-sunken: #241710;
+    --color-border: #4a352a;
+    --color-border-strong: #5c4030;
+
+    --color-fg: #f5e9df;
+    --color-fg-muted: #cbb6a8;
+    --color-fg-subtle: #97887d;
+
+    --color-primary: #e08654;
+    --color-primary-dark: #f3ab82;
+    --color-primary-light: #e79b6d;
+    --color-accent: #e0ab52;
+    --color-on-primary: #241108;
+    --color-nav: rgba(42, 28, 20, 0.92);
+    --color-overlay: rgba(10, 6, 4, 0.64);
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 8px 24px -8px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 20px 48px -12px rgba(0, 0, 0, 0.6);
+  }
+}
