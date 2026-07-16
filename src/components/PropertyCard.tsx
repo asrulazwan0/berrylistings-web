@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import type { Property } from '../api/types';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
+import { demoImage } from '../api/demo-images';
 
 interface PropertyCardProps {
   property: Property;
@@ -31,8 +32,11 @@ export default function PropertyCard({
     [],
   );
 
-  const imageUrl =
-    property.images.length > 0 ? property.images[0].url : '';
+  const imageUrl = useMemo(() => {
+    if (property.images.length > 0) return property.images[0].url;
+    return demoImage(property.propertyType);
+  }, [property.images, property.propertyType]);
+
   const imageAlt =
     property.images.length > 0
       ? (property.images[0].alt ?? property.title)
@@ -42,35 +46,7 @@ export default function PropertyCard({
     <article className="property-card">
       <Link className="property-card__link" to={`/property/${property.id}`}>
         <div className="property-card__media" data-tone={tone}>
-          {imageUrl ? (
-            <img src={imageUrl} alt={imageAlt} loading="lazy" />
-          ) : (
-            <div className="photo-placeholder" aria-hidden="true">
-              <svg
-                width="28"
-                height="28"
-                viewBox="0 0 28 28"
-                fill="none"
-              >
-                <rect
-                  x="2"
-                  y="2"
-                  width="24"
-                  height="24"
-                  rx="3"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                />
-                <circle cx="10" cy="10" r="2.5" stroke="currentColor" strokeWidth="1.5" />
-                <path
-                  d="M2 20l7-7 5 5 4-4 8 8"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-          )}
+          <img src={imageUrl} alt={imageAlt} loading="lazy" />
           {badge && <span className="property-card__badge">{badge}</span>}
         </div>
         <div className="property-card__body">
