@@ -44,9 +44,9 @@ export function getProperty(id: string): Promise<PropertyResponse> {
   return fetchApi<PropertyResponse>(`/properties/${id}`);
 }
 
-export function postAuthGoogle(credential: string): Promise<{ token: string }> {
-  return fetchApi<{ token: string }>('/auth/google', {
+export function postAuthGoogle(idToken: string): Promise<{ token: string }> {
+  return fetchApi<{ data: { token: string } }>('/auth/google', {
     method: 'POST',
-    body: JSON.stringify({ credential }),
-  });
+    body: JSON.stringify({ idToken }),
+  }).then((res) => ({ token: res.data.token }));
 }
