@@ -1,9 +1,9 @@
 import { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { getProperties } from '../../api/client';
+import { getProperties, createProperty, updateProperty, deleteProperty } from '../../api/client';
 import type { Property } from '../../api/types';
-import PhotoPlaceholder from '../../components/PhotoPlaceholder';
+import PropertyForm from '../../components/PropertyForm';
 import '../../styles/admin.css';
 
 function getInitials(name: string): string {
@@ -37,13 +37,49 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [formOpen, setFormOpen] = useState(false);
+  const [editing, setEditing] = useState<Property | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState<string | null>(null);
 
-  useEffect(() => {
+  const fetchAll = () => {
     getProperties({ limit: '50', status: '' })
       .then((res) => setProperties(res.data))
       .catch(() => {})
       .finally(() => setLoading(false));
-  }, []);
+  };
+
+  useEffect(() => { fetchAll(); }, []);
+
+  const handleCreate = () => { setEditing(null); setFormOpen(true); };
+  const handleEdit = (p: Property) => { setEditing(p); setFormOpen(true); };
+
+  const handleSave = async (data: Record<string, unknown>) => {
+    setSaving(true);
+    try {
+      if (editing) {
+        await updateProperty(editing.uuid, data);
+      } else {
+        await createProperty(data);
+      }
+      setFormOpen(false);
+      setLoading(true);
+      fetchAll();
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleDelete = async (uuid: string) => {
+    if (deleting === uuid) {
+      await deleteProperty(uuid);
+      setDeleting(null);
+      setLoading(true);
+      fetchAll();
+    } else {
+      setDeleting(uuid);
+    }
+  };
 
   const filtered = useMemo(() => {
     return properties.filter((p) => {
@@ -104,7 +140,7 @@ export default function AdminDashboard() {
         </Link>
 
         <nav className="admin-nav" aria-label="Admin">
-          <a href="#">
+          <Link to="/admin" aria-current="page">
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
               <rect x="2" y="2" width="6" height="6" rx="1.2" stroke="currentColor" strokeWidth="1.4" />
               <rect x="10" y="2" width="6" height="6" rx="1.2" stroke="currentColor" strokeWidth="1.4" />
@@ -112,35 +148,28 @@ export default function AdminDashboard() {
               <rect x="10" y="10" width="6" height="6" rx="1.2" stroke="currentColor" strokeWidth="1.4" />
             </svg>
             Overview
-          </a>
-          <a href="#" aria-current="page">
+          </Link>
+          <Link to="/admin">
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
               <path d="M3 4.5L9 1l6 3.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
               <path d="M4 4v11a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
             Listings
-          </a>
-          <a href="#">
+          </Link>
+          <Link to="/admin/users">
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
               <circle cx="9" cy="6" r="3" stroke="currentColor" strokeWidth="1.4" />
               <path d="M3 16c0-3 2.7-5 6-5s6 2 6 5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
             </svg>
             Users
-          </a>
-          <a href="#">
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-              <path d="M2 5l7 4 7-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M2 5v8l7 4 7-4V5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            Inquiries
-          </a>
-          <a href="#">
+          </Link>
+          <Link to="/admin">
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
               <circle cx="9" cy="9" r="2.4" stroke="currentColor" strokeWidth="1.4" />
               <path d="M14.8 9a5.8 5.8 0 0 0-.08-.94l1.42-1.1-1.4-2.42-1.7.5a5.8 5.8 0 0 0-1.6-.94L11 2.4H8l-.44 1.7a5.8 5.8 0 0 0-1.6.94l-1.7-.5-1.4 2.42 1.42 1.1a5.8 5.8 0 0 0 0 1.88l-1.42 1.1 1.4 2.42 1.7-.5c.47.4 1 .72 1.6.94L8 15.6h3l.44-1.7c.6-.22 1.13-.54 1.6-.94l1.7.5 1.4-2.42-1.42-1.1c.05-.31.08-.62.08-.94Z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
             </svg>
             Settings
-          </a>
+          </Link>
         </nav>
 
         {user && (
@@ -212,7 +241,7 @@ export default function AdminDashboard() {
             <Link className="btn btn--ghost btn--sm admin-view-site" to="/">
               View site
             </Link>
-            <button className="btn btn--primary btn--sm" type="button">
+            <button className="btn btn--primary btn--sm" type="button" onClick={handleCreate}>
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                 <path d="M8 3v10M3 8h10" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
               </svg>
@@ -322,7 +351,13 @@ export default function AdminDashboard() {
                                 {property.photos.length > 0 ? (
                                   <img src={property.photos[0].url} alt="" />
                                 ) : (
-                                  <PhotoPlaceholder />
+                                  <div className="photo-placeholder" aria-hidden="true" style={{ width: 48, height: 36 }}>
+                                    <svg width="16" height="16" viewBox="0 0 28 28" fill="none">
+                                      <rect x="2" y="2" width="24" height="24" rx="3" stroke="currentColor" strokeWidth="1.5" />
+                                      <circle cx="10" cy="10" r="2.5" stroke="currentColor" strokeWidth="1.5" />
+                                      <path d="M2 20l7-7 5 5 4-4 8 8" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+                                    </svg>
+                                  </div>
                                 )}
                               </div>
                               <div>
@@ -342,12 +377,12 @@ export default function AdminDashboard() {
                           <td>{property.agent?.email ?? 'Unassigned'}</td>
                           <td>
                             <div style={{ display: 'flex', gap: 'var(--space-1)', justifyContent: 'flex-end' }}>
-                              <button className="icon-btn" type="button" aria-label="Edit listing">
+                              <button className="icon-btn" type="button" aria-label="Edit listing" onClick={() => handleEdit(property)}>
                                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                                   <path d="M11 2l3 3-8 8H3v-3l8-8Z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
                                 </svg>
                               </button>
-                              <button className="icon-btn" type="button" aria-label="Delete listing">
+                              <button className="icon-btn" type="button" aria-label={deleting === property.uuid ? 'Confirm delete' : 'Delete listing'} onClick={() => handleDelete(property.uuid)} style={deleting === property.uuid ? { color: 'var(--color-destructive)' } : undefined}>
                                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                                   <path d="M3 4.5h10M6.5 4.5V3a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1.5M4.5 4.5l.6 8.5a1 1 0 0 0 1 .9h3.8a1 1 0 0 0 1-.9l.6-8.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
                                 </svg>
@@ -387,6 +422,15 @@ export default function AdminDashboard() {
           </div>
         </main>
       </div>
+
+      {formOpen && (
+        <PropertyForm
+          property={editing}
+          onSave={handleSave}
+          onClose={() => setFormOpen(false)}
+          saving={saving}
+        />
+      )}
     </div>
   );
 }

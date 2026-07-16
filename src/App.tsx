@@ -9,6 +9,7 @@ import Listings from './pages/Listings';
 import PropertyDetail from './pages/PropertyDetail';
 import Login from './pages/Login';
 import AdminDashboard from './pages/admin/Dashboard';
+import Users from './pages/admin/Users';
 
 export default function App() {
   return (
@@ -21,14 +22,8 @@ export default function App() {
           <Route path="/listings" element={<Listings />} />
           <Route path="/property/:id" element={<PropertyDetail />} />
           <Route path="/login" element={<Login />} />
-          <Route
-            path="/admin"
-            element={
-              <ProtectedRoute>
-                <AdminDashboard />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+          <Route path="/admin/users" element={<ProtectedRoute><Users /></ProtectedRoute>} />
         </Routes>
         <Footer />
       </AuthProvider>
