@@ -15,176 +15,19 @@
 Error: expect(locator).toContainText(expected) failed
 
 Locator: locator('td')
-Expected substring: "e2e-1784212253273@test.com"
-Error: strict mode violation: locator('td') resolved to 16 elements:
-    1) <td>…</td> aka getByRole('cell', { name: 'asrulazwan90@gmail.com(you)' })
-    2) <td>…</td> aka getByRole('cell', { name: 'ADMIN' })
-    3) <td>…</td> aka getByRole('cell', { name: 'Enabled' }).first()
-    4) <td>…</td> aka getByRole('cell', { name: '—' })
-    5) <td>…</td> aka getByRole('cell', { name: 'demo@berrylistings.local' })
-    6) <td>…</td> aka getByRole('cell', { name: 'USER' }).first()
-    7) <td>…</td> aka getByRole('cell', { name: 'Enabled' }).nth(1)
-    8) <td>…</td> aka getByRole('cell', { name: 'Delete user' }).first()
-    9) <td>…</td> aka getByRole('cell', { name: 'e2e-1784212193980@test.com' })
-    10) <td>…</td> aka getByRole('cell', { name: 'USER' }).nth(2)
-    ...
+Expected substring: "e2e-1784212455994@test.com"
+Received string:    "No users found."
 
 Call log:
   - Expect "toContainText" with timeout 5000ms
   - waiting for locator('td')
+    14 × locator resolved to <td colspan="4">No users found.</td>
+       - unexpected value "No users found."
 
 ```
 
-# Page snapshot
-
 ```yaml
-- generic [ref=e2]:
-  - link "Skip to content" [ref=e3] [cursor=pointer]:
-    - /url: "#main"
-  - banner [ref=e4]:
-    - generic [ref=e5]:
-      - link "Berry Listings" [ref=e6] [cursor=pointer]:
-        - /url: /
-        - img [ref=e7]
-        - text: Berry Listings
-      - navigation "Primary" [ref=e11]:
-        - link "Sell with Berry" [ref=e12] [cursor=pointer]:
-          - /url: "#"
-        - link "Agents" [ref=e13] [cursor=pointer]:
-          - /url: "#"
-      - link "Dashboard" [ref=e15] [cursor=pointer]:
-        - /url: /admin
-  - generic [ref=e16]:
-    - complementary "Admin navigation" [ref=e17]:
-      - link "Berry Admin" [ref=e18] [cursor=pointer]:
-        - /url: /
-        - img [ref=e19]
-        - text: Berry Admin
-      - navigation "Admin" [ref=e23]:
-        - link "Overview" [ref=e24] [cursor=pointer]:
-          - /url: /admin
-        - link "Listings" [ref=e25] [cursor=pointer]:
-          - /url: /admin/listings
-        - link "Users" [ref=e26] [cursor=pointer]:
-          - /url: /admin/users
-        - link "Settings" [ref=e27] [cursor=pointer]:
-          - /url: /admin/settings
-      - generic [ref=e28]:
-        - generic [ref=e29]:
-          - generic [ref=e30]: A
-          - generic [ref=e31]:
-            - generic [ref=e32]: Admin
-            - generic [ref=e33]: Admin
-        - button "Sign out" [ref=e34] [cursor=pointer]
-    - generic [ref=e35]:
-      - banner [ref=e36]:
-        - generic [ref=e38]:
-          - generic [ref=e39]: Berry Admin
-          - heading "Dashboard" [level=1] [ref=e40]
-        - link "View site" [ref=e42] [cursor=pointer]:
-          - /url: /
-      - main [ref=e43]:
-        - generic [ref=e44]:
-          - textbox "new.user@email.com" [ref=e45]
-          - button "Add User" [active] [ref=e46] [cursor=pointer]
-        - table [ref=e48]:
-          - rowgroup [ref=e49]:
-            - row "Email Role Status Actions" [ref=e50]:
-              - columnheader "Email" [ref=e51]
-              - columnheader "Role" [ref=e52]
-              - columnheader "Status" [ref=e53]
-              - columnheader "Actions" [ref=e54]
-          - rowgroup [ref=e55]:
-            - row "asrulazwan90@gmail.com(you) ADMIN Enabled —" [ref=e56]:
-              - cell "asrulazwan90@gmail.com(you)" [ref=e57]:
-                - strong [ref=e58]: asrulazwan90@gmail.com
-                - text: (you)
-              - cell "ADMIN" [ref=e59]:
-                - generic [ref=e60]: ADMIN
-              - cell "Enabled" [ref=e61]:
-                - generic [ref=e62] [cursor=pointer]: Enabled
-              - cell "—" [ref=e63]
-            - row "demo@berrylistings.local USER Enabled Delete user" [ref=e64]:
-              - cell "demo@berrylistings.local" [ref=e65]:
-                - strong [ref=e66]: demo@berrylistings.local
-              - cell "USER" [ref=e67]:
-                - generic [ref=e68]: USER
-              - cell "Enabled" [ref=e69]:
-                - button "Enabled" [ref=e70] [cursor=pointer]
-              - cell "Delete user" [ref=e71]:
-                - button "Delete user" [ref=e72] [cursor=pointer]: ✕
-            - row "e2e-1784212193980@test.com USER Enabled Delete user" [ref=e73]:
-              - cell "e2e-1784212193980@test.com" [ref=e74]:
-                - strong [ref=e75]: e2e-1784212193980@test.com
-              - cell "USER" [ref=e76]:
-                - generic [ref=e77]: USER
-              - cell "Enabled" [ref=e78]:
-                - button "Enabled" [ref=e79] [cursor=pointer]
-              - cell "Delete user" [ref=e80]:
-                - button "Delete user" [ref=e81] [cursor=pointer]: ✕
-            - row "e2e-1784212253273@test.com USER Enabled Delete user" [ref=e82]:
-              - cell "e2e-1784212253273@test.com" [ref=e83]:
-                - strong [ref=e84]: e2e-1784212253273@test.com
-              - cell "USER" [ref=e85]:
-                - generic [ref=e86]: USER
-              - cell "Enabled" [ref=e87]:
-                - button "Enabled" [ref=e88] [cursor=pointer]
-              - cell "Delete user" [ref=e89]:
-                - button "Delete user" [ref=e90] [cursor=pointer]: ✕
-  - contentinfo [ref=e91]:
-    - generic [ref=e92]:
-      - generic [ref=e93]:
-        - generic [ref=e94]:
-          - link "Berry Listings" [ref=e95] [cursor=pointer]:
-            - /url: /
-            - img [ref=e96]
-            - text: Berry Listings
-          - paragraph [ref=e100]: A warmer way to browse, buy, and sell property — built for agents who answer their phone.
-        - generic [ref=e101]:
-          - heading "Explore" [level=4] [ref=e102]
-          - list [ref=e103]:
-            - listitem [ref=e104]:
-              - link "Buy" [ref=e105] [cursor=pointer]:
-                - /url: /listings
-            - listitem [ref=e106]:
-              - link "Rent" [ref=e107] [cursor=pointer]:
-                - /url: /listings
-            - listitem [ref=e108]:
-              - link "Sell with Berry" [ref=e109] [cursor=pointer]:
-                - /url: "#"
-            - listitem [ref=e110]:
-              - link "New developments" [ref=e111] [cursor=pointer]:
-                - /url: "#"
-        - generic [ref=e112]:
-          - heading "Company" [level=4] [ref=e113]
-          - list [ref=e114]:
-            - listitem [ref=e115]:
-              - link "About" [ref=e116] [cursor=pointer]:
-                - /url: "#"
-            - listitem [ref=e117]:
-              - link "Agents" [ref=e118] [cursor=pointer]:
-                - /url: "#"
-            - listitem [ref=e119]:
-              - link "Careers" [ref=e120] [cursor=pointer]:
-                - /url: "#"
-            - listitem [ref=e121]:
-              - link "Contact" [ref=e122] [cursor=pointer]:
-                - /url: "#"
-        - generic [ref=e123]:
-          - heading "Account" [level=4] [ref=e124]
-          - list [ref=e125]:
-            - listitem [ref=e126]:
-              - link "Sign in" [ref=e127] [cursor=pointer]:
-                - /url: /login
-            - listitem [ref=e128]:
-              - link "Agent dashboard" [ref=e129] [cursor=pointer]:
-                - /url: /admin
-            - listitem [ref=e130]:
-              - link "Help center" [ref=e131] [cursor=pointer]:
-                - /url: "#"
-      - generic [ref=e132]:
-        - generic [ref=e133]: © 2026 Berry Listings. All rights reserved.
-        - generic [ref=e134]: Made for people, not portals.
+- cell "No users found."
 ```
 
 # Test source
@@ -211,8 +54,8 @@ Call log:
   19 | 
   20 |   test('nav has correct links', async ({ page }) => {
   21 |     await page.goto('/');
-  22 |     await expect(page.locator('nav[aria-label="Primary"]')).toContainText('Agents');
-  23 |     await expect(page.locator('header .nav__signin')).toBeVisible();
+  22 |     await expect(page.locator('nav[aria-label="Primary"]')).toContainText('Agents', { timeout: 10000 });
+  23 |     await expect(page.locator('header .nav__signin')).toBeVisible({ timeout: 10000 });
   24 |   });
   25 | 
   26 |   test('login page renders', async ({ page }) => {
@@ -270,7 +113,7 @@ Call log:
   77 | 
   78 |   test('nav shows Dashboard when authed', async ({ page }) => {
   79 |     await page.goto('/');
-  80 |     await expect(page.locator('header')).toContainText('Dashboard');
+  80 |     await expect(page.locator('header')).toContainText('Dashboard', { timeout: 10000 });
   81 |   });
   82 | });
   83 | 

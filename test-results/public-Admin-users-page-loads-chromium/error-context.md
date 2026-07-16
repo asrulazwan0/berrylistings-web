@@ -16,7 +16,7 @@ Error: expect(locator).toContainText(expected) failed
 
 Locator: locator('td')
 Expected substring: "asrulazwan90@gmail.com"
-Error: strict mode violation: locator('td') resolved to 12 elements:
+Error: strict mode violation: locator('td') resolved to 20 elements:
     1) <td>…</td> aka getByRole('cell', { name: 'asrulazwan90@gmail.com(you)' })
     2) <td>…</td> aka getByRole('cell', { name: 'ADMIN' })
     3) <td>…</td> aka getByRole('cell', { name: 'Enabled' }).first()
@@ -122,60 +122,78 @@ Call log:
                 - button "Enabled" [ref=e79] [cursor=pointer]
               - cell "Delete user" [ref=e80]:
                 - button "Delete user" [ref=e81] [cursor=pointer]: ✕
-  - contentinfo [ref=e82]:
-    - generic [ref=e83]:
-      - generic [ref=e84]:
-        - generic [ref=e85]:
-          - link "Berry Listings" [ref=e86] [cursor=pointer]:
-            - /url: /
-            - img [ref=e87]
-            - text: Berry Listings
-          - paragraph [ref=e91]: A warmer way to browse, buy, and sell property — built for agents who answer their phone.
-        - generic [ref=e92]:
-          - heading "Explore" [level=4] [ref=e93]
-          - list [ref=e94]:
-            - listitem [ref=e95]:
-              - link "Buy" [ref=e96] [cursor=pointer]:
-                - /url: /listings
-            - listitem [ref=e97]:
-              - link "Rent" [ref=e98] [cursor=pointer]:
-                - /url: /listings
-            - listitem [ref=e99]:
-              - link "Sell with Berry" [ref=e100] [cursor=pointer]:
-                - /url: "#"
-            - listitem [ref=e101]:
-              - link "New developments" [ref=e102] [cursor=pointer]:
-                - /url: "#"
+            - row "e2e-1784212253273@test.com USER Enabled Delete user" [ref=e82]:
+              - cell "e2e-1784212253273@test.com" [ref=e83]:
+                - strong [ref=e84]: e2e-1784212253273@test.com
+              - cell "USER" [ref=e85]:
+                - generic [ref=e86]: USER
+              - cell "Enabled" [ref=e87]:
+                - button "Enabled" [ref=e88] [cursor=pointer]
+              - cell "Delete user" [ref=e89]:
+                - button "Delete user" [ref=e90] [cursor=pointer]: ✕
+            - row "e2e-1784212390244@test.com USER Enabled Delete user" [ref=e91]:
+              - cell "e2e-1784212390244@test.com" [ref=e92]:
+                - strong [ref=e93]: e2e-1784212390244@test.com
+              - cell "USER" [ref=e94]:
+                - generic [ref=e95]: USER
+              - cell "Enabled" [ref=e96]:
+                - button "Enabled" [ref=e97] [cursor=pointer]
+              - cell "Delete user" [ref=e98]:
+                - button "Delete user" [ref=e99] [cursor=pointer]: ✕
+  - contentinfo [ref=e100]:
+    - generic [ref=e101]:
+      - generic [ref=e102]:
         - generic [ref=e103]:
-          - heading "Company" [level=4] [ref=e104]
-          - list [ref=e105]:
-            - listitem [ref=e106]:
-              - link "About" [ref=e107] [cursor=pointer]:
-                - /url: "#"
-            - listitem [ref=e108]:
-              - link "Agents" [ref=e109] [cursor=pointer]:
-                - /url: "#"
-            - listitem [ref=e110]:
-              - link "Careers" [ref=e111] [cursor=pointer]:
-                - /url: "#"
-            - listitem [ref=e112]:
-              - link "Contact" [ref=e113] [cursor=pointer]:
-                - /url: "#"
-        - generic [ref=e114]:
-          - heading "Account" [level=4] [ref=e115]
-          - list [ref=e116]:
+          - link "Berry Listings" [ref=e104] [cursor=pointer]:
+            - /url: /
+            - img [ref=e105]
+            - text: Berry Listings
+          - paragraph [ref=e109]: A warmer way to browse, buy, and sell property — built for agents who answer their phone.
+        - generic [ref=e110]:
+          - heading "Explore" [level=4] [ref=e111]
+          - list [ref=e112]:
+            - listitem [ref=e113]:
+              - link "Buy" [ref=e114] [cursor=pointer]:
+                - /url: /listings
+            - listitem [ref=e115]:
+              - link "Rent" [ref=e116] [cursor=pointer]:
+                - /url: /listings
             - listitem [ref=e117]:
-              - link "Sign in" [ref=e118] [cursor=pointer]:
-                - /url: /login
-            - listitem [ref=e119]:
-              - link "Agent dashboard" [ref=e120] [cursor=pointer]:
-                - /url: /admin
-            - listitem [ref=e121]:
-              - link "Help center" [ref=e122] [cursor=pointer]:
+              - link "Sell with Berry" [ref=e118] [cursor=pointer]:
                 - /url: "#"
-      - generic [ref=e123]:
-        - generic [ref=e124]: © 2026 Berry Listings. All rights reserved.
-        - generic [ref=e125]: Made for people, not portals.
+            - listitem [ref=e119]:
+              - link "New developments" [ref=e120] [cursor=pointer]:
+                - /url: "#"
+        - generic [ref=e121]:
+          - heading "Company" [level=4] [ref=e122]
+          - list [ref=e123]:
+            - listitem [ref=e124]:
+              - link "About" [ref=e125] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e126]:
+              - link "Agents" [ref=e127] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e128]:
+              - link "Careers" [ref=e129] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=e130]:
+              - link "Contact" [ref=e131] [cursor=pointer]:
+                - /url: "#"
+        - generic [ref=e132]:
+          - heading "Account" [level=4] [ref=e133]
+          - list [ref=e134]:
+            - listitem [ref=e135]:
+              - link "Sign in" [ref=e136] [cursor=pointer]:
+                - /url: /login
+            - listitem [ref=e137]:
+              - link "Agent dashboard" [ref=e138] [cursor=pointer]:
+                - /url: /admin
+            - listitem [ref=e139]:
+              - link "Help center" [ref=e140] [cursor=pointer]:
+                - /url: "#"
+      - generic [ref=e141]:
+        - generic [ref=e142]: © 2026 Berry Listings. All rights reserved.
+        - generic [ref=e143]: Made for people, not portals.
 ```
 
 # Test source
@@ -202,8 +220,8 @@ Call log:
   19 | 
   20 |   test('nav has correct links', async ({ page }) => {
   21 |     await page.goto('/');
-  22 |     await expect(page.locator('nav[aria-label="Primary"]')).toContainText('Agents');
-  23 |     await expect(page.locator('header .nav__signin')).toBeVisible();
+  22 |     await expect(page.locator('nav[aria-label="Primary"]')).toContainText('Agents', { timeout: 10000 });
+  23 |     await expect(page.locator('header .nav__signin')).toBeVisible({ timeout: 10000 });
   24 |   });
   25 | 
   26 |   test('login page renders', async ({ page }) => {
@@ -261,7 +279,7 @@ Call log:
   77 | 
   78 |   test('nav shows Dashboard when authed', async ({ page }) => {
   79 |     await page.goto('/');
-  80 |     await expect(page.locator('header')).toContainText('Dashboard');
+  80 |     await expect(page.locator('header')).toContainText('Dashboard', { timeout: 10000 });
   81 |   });
   82 | });
   83 | 

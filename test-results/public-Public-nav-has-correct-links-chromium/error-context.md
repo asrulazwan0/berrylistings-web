@@ -16,11 +16,11 @@ Error: expect(locator).toBeVisible() failed
 
 Locator: locator('header .nav__signin')
 Expected: visible
-Timeout: 5000ms
+Timeout: 10000ms
 Error: element(s) not found
 
 Call log:
-  - Expect "toBeVisible" with timeout 5000ms
+  - Expect "toBeVisible" with timeout 10000ms
   - waiting for locator('header .nav__signin')
 
 ```
@@ -195,8 +195,8 @@ Call log:
   19 | 
   20 |   test('nav has correct links', async ({ page }) => {
   21 |     await page.goto('/');
-  22 |     await expect(page.locator('nav[aria-label="Primary"]')).toContainText('Agents');
-> 23 |     await expect(page.locator('header .nav__signin')).toBeVisible();
+  22 |     await expect(page.locator('nav[aria-label="Primary"]')).toContainText('Agents', { timeout: 10000 });
+> 23 |     await expect(page.locator('header .nav__signin')).toBeVisible({ timeout: 10000 });
      |                                                       ^ Error: expect(locator).toBeVisible() failed
   24 |   });
   25 | 
@@ -254,7 +254,7 @@ Call log:
   77 | 
   78 |   test('nav shows Dashboard when authed', async ({ page }) => {
   79 |     await page.goto('/');
-  80 |     await expect(page.locator('header')).toContainText('Dashboard');
+  80 |     await expect(page.locator('header')).toContainText('Dashboard', { timeout: 10000 });
   81 |   });
   82 | });
   83 | 

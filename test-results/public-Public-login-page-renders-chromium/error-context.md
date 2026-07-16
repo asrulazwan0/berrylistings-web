@@ -108,8 +108,8 @@ Call log:
   19 | 
   20 |   test('nav has correct links', async ({ page }) => {
   21 |     await page.goto('/');
-  22 |     await expect(page.locator('nav[aria-label="Primary"]')).toContainText('Agents');
-  23 |     await expect(page.locator('header .nav__signin')).toBeVisible();
+  22 |     await expect(page.locator('nav[aria-label="Primary"]')).toContainText('Agents', { timeout: 10000 });
+  23 |     await expect(page.locator('header .nav__signin')).toBeVisible({ timeout: 10000 });
   24 |   });
   25 | 
   26 |   test('login page renders', async ({ page }) => {
@@ -167,7 +167,7 @@ Call log:
   77 | 
   78 |   test('nav shows Dashboard when authed', async ({ page }) => {
   79 |     await page.goto('/');
-  80 |     await expect(page.locator('header')).toContainText('Dashboard');
+  80 |     await expect(page.locator('header')).toContainText('Dashboard', { timeout: 10000 });
   81 |   });
   82 | });
   83 | 
