@@ -1,94 +1,179 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import '../styles/login.css';
 
+declare global {
+  interface Window {
+    google?: {
+      accounts: {
+        id: {
+          initialize: (config: Record<string, unknown>) => void;
+          prompt: (callback?: (notification: { isNotDisplayed: () => boolean }) => void) => void;
+          renderButton: (el: HTMLElement, config: Record<string, unknown>) => void;
+        };
+      };
+    };
+  }
+}
+
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID as string | undefined;
+
 export default function Login() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, login } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [email, setEmail] = useState('asrulazwan90@gmail.com');
+  const [gisReady, setGisReady] = useState(false);
+  const buttonRef = useRef<HTMLDivElement>(null);
+  const scriptLoaded = useRef(false);
 
-  // Already authenticated
-  if (isAuthenticated) {
-    navigate('/admin', { replace: true });
-    return null;
-  }
-
-  async function handleDevLogin(e: React.FormEvent) {
-    e.preventDefault();
-    setError(null);
-    setIsLoading(true);
-    try {
-      const res = await fetch('/api/v1/auth/dev-login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      });
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        throw new Error(err.error || 'Login failed');
-      }
-      const { data } = await res.json();
-      localStorage.setItem('berry_jwt', data.token);
-      localStorage.setItem('berry_user', JSON.stringify({ name: email.split('@')[0], email, role: data.user.role }));
-      window.location.href = '/admin';
-    } catch (err: unknown) {
-      setError((err as Error).message);
-    } finally {
-      setIsLoading(false);
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/admin', { replace: true });
     }
-  }
+  }, [isAuthenticated, navigate]);
+
+  // Load Google Identity Services script
+  useEffect(() => {
+    if (scriptLoaded.current) return;
+    scriptLoaded.current = true;
+
+    const script = document.createElement('script');
+    script.src = 'https://accounts.google.com/gsi/client';
+    script.async = true;
+    script.defer = true;
+    script.onload = () => setGisReady(true);
+    script.onerror = () => setError('Failed to load Google sign-in. Please try again.');
+    document.head.appendChild(script);
+  }, []);
+
+  // Initialize Google button once GIS is loaded and DOM is ready
+  useEffect(() => {
+    if (!gisReady || !buttonRef.current || !window.google) return;
+
+    const handleCredentialResponse = async (response: { credential: string }) => {
+      setError(null);
+      setIsLoading(true);
+      try {
+        await login(response.credential);
+        navigate('/admin', { replace: true });
+      } catch (err: unknown) {
+        setError((err as Error).message || 'Sign-in failed. Please try again.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (GOOGLE_CLIENT_ID) {
+      window.google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: handleCredentialResponse,
+        auto_select: false,
+      });
+
+      window.google.accounts.id.renderButton(buttonRef.current, {
+        type: 'standard',
+        theme: 'outline',
+        size: 'large',
+        text: 'continue_with',
+        shape: 'rectangular',
+        width: buttonRef.current.offsetWidth || 400,
+      });
+
+      // Also trigger One Tap
+      window.google.accounts.id.prompt();
+    } else {
+      // No client ID configured — show a message instead
+      setError(
+        'Google OAuth is not configured. Set VITE_GOOGLE_CLIENT_ID in your .env file.',
+      );
+    }
+  }, [gisReady, login, navigate]);
+
+  if (isAuthenticated) return null;
 
   return (
     <main id="main" className="auth-wrap">
       <div className="auth-visual">
-        <div className="eyebrow" style={{ color: 'rgba(255,255,255,0.75)' }}>For agents &amp; admins</div>
-        <h2 style={{ color: 'inherit', fontSize: 'var(--text-2xl)', maxWidth: '16ch', marginTop: 'var(--space-4)' }}>
+        <div className="eyebrow" style={{ color: 'rgba(255,255,255,0.75)' }}>
+          For agents &amp; admins
+        </div>
+        <h2
+          style={{
+            color: 'inherit',
+            fontSize: 'var(--text-2xl)',
+            maxWidth: '16ch',
+            marginTop: 'var(--space-4)',
+          }}
+        >
           Manage your listings in one calm place.
         </h2>
         <p style={{ marginTop: 'var(--space-4)', maxWidth: '40ch', opacity: 0.85 }}>
-          Publish new properties, update pricing, and respond to buyer inquiries — all from the Berry agent dashboard.
+          Publish new properties, update pricing, and respond to buyer inquiries —
+          all from the Berry agent dashboard.
         </p>
       </div>
 
       <div className="auth-panel">
         <div className="auth-card card">
-          <div className="eyebrow">Development Login</div>
-          <h1 style={{ fontSize: 'var(--text-xl)', marginTop: 'var(--space-3)' }}>Sign in to Berry Listings</h1>
-          <p style={{ color: 'var(--color-fg-muted)', fontSize: 'var(--text-sm)', marginTop: 'var(--space-2)' }}>
-            Dev mode — enter your registered email to sign in.
+          <div className="eyebrow">Welcome back</div>
+          <h1 style={{ fontSize: 'var(--text-xl)', marginTop: 'var(--space-3)' }}>
+            Sign in to Berry Listings
+          </h1>
+          <p
+            style={{
+              color: 'var(--color-fg-muted)',
+              fontSize: 'var(--text-sm)',
+              marginTop: 'var(--space-2)',
+            }}
+          >
+            Access is managed through your Google account — no separate password needed.
           </p>
 
           {error && (
-            <p style={{ color: 'var(--color-destructive)', fontSize: 'var(--text-sm)', marginTop: 'var(--space-4)', padding: 'var(--space-3)', background: 'var(--color-destructive-bg)', borderRadius: 'var(--radius-sm)' }}>
+            <div
+              style={{
+                color: 'var(--color-destructive)',
+                fontSize: 'var(--text-sm)',
+                marginTop: 'var(--space-4)',
+                padding: 'var(--space-3)',
+                background: 'var(--color-destructive-bg)',
+                borderRadius: 'var(--radius-sm)',
+              }}
+            >
               {error}
-            </p>
+            </div>
           )}
 
-          <form onSubmit={handleDevLogin} style={{ marginTop: 'var(--space-6)' }}>
-            <label htmlFor="email" style={{ fontSize: 'var(--text-sm)', fontWeight: 500 }}>Email address</label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              style={{ width: '100%', marginTop: 'var(--space-2)', padding: '10px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--color-border)', fontSize: 'var(--text-base)' }}
-              placeholder="asrulazwan90@gmail.com"
-            />
-            <button
-              type="submit"
-              className="btn btn--primary"
-              disabled={isLoading}
-              style={{ width: '100%', marginTop: 'var(--space-4)' }}
-            >
-              {isLoading ? 'Signing in…' : 'Sign in as Admin'}
-            </button>
-          </form>
+          <div style={{ marginTop: 'var(--space-7)' }}>
+            {isLoading ? (
+              <button className="google-btn" type="button" disabled>
+                Signing in…
+              </button>
+            ) : (
+              <div ref={buttonRef} />
+            )}
+          </div>
 
-          <p style={{ marginTop: 'var(--space-4)', fontSize: 'var(--text-xs)', color: 'var(--color-fg-subtle)', textAlign: 'center' }}>
-            Also try: demo@berrylistings.local (regular user)
+          <p
+            style={{
+              marginTop: 'var(--space-6)',
+              fontSize: 'var(--text-xs)',
+              color: 'var(--color-fg-subtle)',
+              textAlign: 'center',
+            }}
+          >
+            By continuing you agree to Berry Listings'{' '}
+            <a href="#" style={{ color: 'var(--color-primary)', textDecoration: 'underline' }}>
+              Terms
+            </a>{' '}
+            and{' '}
+            <a href="#" style={{ color: 'var(--color-primary)', textDecoration: 'underline' }}>
+              Privacy Policy
+            </a>
+            .
           </p>
         </div>
       </div>

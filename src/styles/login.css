@@ -20,8 +20,8 @@
   display: none;
   position: relative;
   background:
-    linear-gradient(155deg, rgba(36, 17, 8, 0.82), rgba(36, 17, 8, 0.16) 70%),
-    url('../assets/auth-bg.jpg') center / cover;
+    linear-gradient(155deg, rgba(36, 17, 8, 0.88), rgba(36, 17, 8, 0.22) 70%),
+    linear-gradient(180deg, #5c3a1e 0%, #3d2410 40%, #7a4e2c 100%);
   color: #fdf5ee;
   padding: var(--space-9);
   flex-direction: column;
