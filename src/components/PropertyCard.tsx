@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import type { Property } from '../api/types';
 import { useState, useCallback } from 'react';
-import UnsplashImage from './UnsplashImage';
 
 interface PropertyCardProps {
   property: Property;
@@ -15,16 +14,6 @@ function formatPrice(price: number): string {
     currency: 'USD',
     maximumFractionDigits: 0,
   }).format(price);
-}
-
-function unsplashQuery(type: string): string {
-  const map: Record<string, string> = {
-    HOUSE: 'modern house exterior',
-    CONDO: 'luxury condo building',
-    TOWNHOME: 'townhouse exterior',
-    LAND: 'landscape property',
-  };
-  return map[type] ?? 'real estate';
 }
 
 export default function PropertyCard({
@@ -56,10 +45,31 @@ export default function PropertyCard({
           {imageUrl ? (
             <img src={imageUrl} alt={imageAlt} loading="lazy" />
           ) : (
-            <UnsplashImage
-              query={unsplashQuery(property.propertyType)}
-              alt={property.title}
-            />
+            <div className="photo-placeholder" aria-hidden="true">
+              <svg
+                width="28"
+                height="28"
+                viewBox="0 0 28 28"
+                fill="none"
+              >
+                <rect
+                  x="2"
+                  y="2"
+                  width="24"
+                  height="24"
+                  rx="3"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                />
+                <circle cx="10" cy="10" r="2.5" stroke="currentColor" strokeWidth="1.5" />
+                <path
+                  d="M2 20l7-7 5 5 4-4 8 8"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
           )}
           {badge && <span className="property-card__badge">{badge}</span>}
         </div>
