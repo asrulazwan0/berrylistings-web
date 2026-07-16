@@ -51,7 +51,7 @@ export default function AdminDashboard() {
         !search ||
         p.title.toLowerCase().includes(search.toLowerCase()) ||
         p.city.toLowerCase().includes(search.toLowerCase()) ||
-        (p.agent?.name ?? '').toLowerCase().includes(search.toLowerCase());
+        (p.agent?.email ?? '').toLowerCase().includes(search.toLowerCase());
       const matchStatus =
         statusFilter === 'all' ||
         p.status.toLowerCase() === statusFilter.toLowerCase();
@@ -315,12 +315,12 @@ export default function AdminDashboard() {
                       </tr>
                     ) : (
                       filtered.slice(0, 10).map((property) => (
-                        <tr key={property.id}>
+                        <tr key={property.uuid}>
                           <td>
                             <div className="row-title-cell">
                               <div className="row-thumb">
-                                {property.images.length > 0 ? (
-                                  <img src={property.images[0].url} alt="" />
+                                {property.photos.length > 0 ? (
+                                  <img src={property.photos[0].url} alt="" />
                                 ) : (
                                   <PhotoPlaceholder />
                                 )}
@@ -328,7 +328,7 @@ export default function AdminDashboard() {
                               <div>
                                 <strong>{property.title}</strong>
                                 <span>
-                                  {property.street}, {property.city}
+                                  {property.addressLine}, {property.city}
                                 </span>
                               </div>
                             </div>
@@ -339,7 +339,7 @@ export default function AdminDashboard() {
                               {property.status.charAt(0) + property.status.slice(1).toLowerCase()}
                             </span>
                           </td>
-                          <td>{property.agent?.name ?? 'Unassigned'}</td>
+                          <td>{property.agent?.email ?? 'Unassigned'}</td>
                           <td>
                             <div style={{ display: 'flex', gap: 'var(--space-1)', justifyContent: 'flex-end' }}>
                               <button className="icon-btn" type="button" aria-label="Edit listing">

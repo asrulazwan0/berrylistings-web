@@ -132,16 +132,16 @@ export default function Home() {
 
             <Link
               className="hero-visual"
-              to={featured.length > 0 ? `/property/${featured[0].id}` : '#'}
+              to={featured.length > 0 ? `/property/${featured[0].uuid}` : '#'}
               aria-label={
                 featured.length > 0
                   ? `View ${featured[0].title}, listed at $${featured[0].price.toLocaleString()}`
                   : 'View featured property'
               }
             >
-              {featured.length > 0 && featured[0].images.length > 0 ? (
+              {featured.length > 0 && featured[0].photos.length > 0 ? (
                 <img
-                  src={featured[0].images[0].url}
+                  src={featured[0].photos[0].url}
                   alt={featured[0].title}
                   fetchPriority="high"
                 />
@@ -317,7 +317,7 @@ export default function Home() {
             <div className="listing-grid">
               {featured.map((property, i) => (
                 <PropertyCard
-                  key={property.id}
+                  key={property.uuid}
                   property={property}
                   badge="For sale"
                   tone={i + 1}

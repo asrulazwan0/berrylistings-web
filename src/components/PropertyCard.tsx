@@ -33,18 +33,15 @@ export default function PropertyCard({
   );
 
   const imageUrl = useMemo(() => {
-    if (property.images.length > 0) return property.images[0].url;
-    return demoImage(property.propertyType);
-  }, [property.images, property.propertyType]);
+    if (property.photos.length > 0) return property.photos[0].url;
+    return demoImage(property.type);
+  }, [property.photos, property.type]);
 
-  const imageAlt =
-    property.images.length > 0
-      ? (property.images[0].alt ?? property.title)
-      : property.title;
+  const imageAlt = property.title;
 
   return (
     <article className="property-card">
-      <Link className="property-card__link" to={`/property/${property.id}`}>
+      <Link className="property-card__link" to={`/property/${property.uuid}`}>
         <div className="property-card__media" data-tone={tone}>
           <img src={imageUrl} alt={imageAlt} loading="lazy" />
           {badge && <span className="property-card__badge">{badge}</span>}
@@ -53,12 +50,12 @@ export default function PropertyCard({
           <div className="property-card__price">{formatPrice(property.price)}</div>
           <div className="property-card__title">{property.title}</div>
           <div className="property-card__location">
-            {property.street}, {property.city}
+            {property.addressLine}, {property.city}
           </div>
           <div className="property-card__meta">
             <span>{property.bedrooms} bd</span>
             <span>{property.bathrooms} ba</span>
-            <span>{property.squareFeet.toLocaleString()} sqft</span>
+            <span>{property.sqft.toLocaleString()} sqft</span>
           </div>
         </div>
       </Link>

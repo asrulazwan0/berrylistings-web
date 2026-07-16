@@ -56,7 +56,7 @@ export default function Listings() {
       status: 'ACTIVE',
     };
 
-    if (filters.location) params.location = filters.location;
+    if (filters.location) params.city = filters.location;
     if (filters.propertyType) params.type = filters.propertyType;
     if (filters.minPrice) params.minPrice = filters.minPrice;
     if (filters.maxPrice) params.maxPrice = filters.maxPrice;
@@ -72,7 +72,7 @@ export default function Listings() {
     try {
       const res = await getProperties(params);
       setProperties(res.data);
-      setTotal(res.meta.total);
+      setTotal(res.meta?.total ?? res.data.length);
     } catch (err: unknown) {
       setError((err as Error).message);
     } finally {
@@ -340,7 +340,7 @@ export default function Listings() {
           {!loading && !error && properties.length > 0 && (
             <div className="listing-grid">
               {properties.map((property, i) => (
-                <PropertyCard key={property.id} property={property} badge="For sale" tone={(i % 4) + 1} />
+                <PropertyCard key={property.uuid} property={property} badge="For sale" tone={(i % 4) + 1} />
               ))}
             </div>
           )}

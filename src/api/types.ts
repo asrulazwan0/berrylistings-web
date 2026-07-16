@@ -1,50 +1,56 @@
-/** BerryListings API types */
+/** BerryListings API types — matches actual API response */
 
 export type PropertyType = 'HOUSE' | 'CONDO' | 'TOWNHOME' | 'LAND';
-
 export type PropertyStatus = 'DRAFT' | 'ACTIVE' | 'PENDING' | 'SOLD';
 
-export interface PropertyImage {
-  id: string;
+export interface PropertyPhoto {
+  id: number;
   url: string;
-  alt: string | null;
-  sortOrder: number;
+  position: number;
+  alt?: string | null;
 }
 
 export interface PropertyAgent {
-  id: string;
-  name: string;
+  uuid: string;
   email: string;
-  phone: string | null;
-  avatarUrl: string | null;
+  role?: string;
+  name?: string;
+  phone?: string | null;
+  avatarUrl?: string | null;
 }
 
 export interface Property {
-  id: string;
+  uuid: string;
   title: string;
   description: string;
   price: number;
-  propertyType: PropertyType;
+  type: PropertyType;
   status: PropertyStatus;
+  addressLine: string;
+  city: string;
   bedrooms: number;
   bathrooms: number;
-  squareFeet: number;
-  lotSize: number | null;
+  sqft: number;
+  lotSizeAcres: number | null;
+  lotSize?: number | null;
   yearBuilt: number | null;
-  street: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  images: PropertyImage[];
-  agent: PropertyAgent | null;
   amenities: string[];
+  photos: PropertyPhoto[];
+  images?: PropertyPhoto[];
+  agent: PropertyAgent | null;
   createdAt: string;
   updatedAt: string;
+  state?: string;
+  zipCode?: string;
+  street?: string;
+  squareFeet?: number;
+  propertyType?: PropertyType;
 }
 
 export interface PropertiesResponse {
+  message: string;
   data: Property[];
-  meta: {
+  meta?: {
     total: number;
     page: number;
     limit: number;
@@ -53,10 +59,6 @@ export interface PropertiesResponse {
 }
 
 export interface PropertyResponse {
-  data: Property;
-}
-
-export interface ApiError {
   message: string;
-  statusCode: number;
+  data: Property;
 }

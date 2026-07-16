@@ -97,7 +97,7 @@ export default function PropertyDetail() {
     );
   }
 
-  const images = property.images;
+  const images = property.photos;
   const mainImage = images.length > 0 ? images[Math.min(activeImage, images.length - 1)] : null;
   const agent = property.agent;
 
@@ -129,7 +129,7 @@ export default function PropertyDetail() {
             {property.title}
           </h1>
           <p style={{ color: 'var(--color-fg-muted)', marginTop: 'var(--space-1)' }}>
-            {property.street}, {property.city}
+            {property.addressLine}, {property.city}
           </p>
         </div>
         <div style={{ textAlign: 'right' }}>
@@ -193,7 +193,7 @@ export default function PropertyDetail() {
               <span>Bathrooms</span>
             </div>
             <div>
-              <strong>{property.squareFeet.toLocaleString()}</strong>
+              <strong>{property.sqft.toLocaleString()}</strong>
               <span>Sqft</span>
             </div>
             {property.lotSize != null && (
@@ -263,7 +263,7 @@ export default function PropertyDetail() {
               </div>
               <div className="map-placeholder__label">
                 <strong>
-                  {property.street}, {property.city}
+                  {property.addressLine}, {property.city}
                 </strong>
                 <br />
                 <span style={{ color: 'var(--color-fg-muted)' }}>
@@ -280,16 +280,11 @@ export default function PropertyDetail() {
             <>
               <div className="agent-card__profile">
                 <div className="agent-card__avatar">
-                  {getInitials(agent.name)}
+                  {getInitials(agent?.name ?? agent?.email ?? 'A')}
                 </div>
                 <div>
-                  <div style={{ fontWeight: 600 }}>{agent.name}</div>
-                  <div
-                    style={{
-                      fontSize: 'var(--text-sm)',
-                      color: 'var(--color-fg-muted)',
-                    }}
-                  >
+                  <div style={{ fontWeight: 600 }}>{agent?.name ?? agent?.email}</div>
+                  <div style={{ fontSize: 'var(--text-sm)', color: 'var(--color-fg-muted)' }}>
                     Listing agent
                   </div>
                 </div>
@@ -300,12 +295,7 @@ export default function PropertyDetail() {
               <div className="agent-card__avatar">BA</div>
               <div>
                 <div style={{ fontWeight: 600 }}>Berry Agent</div>
-                <div
-                  style={{
-                    fontSize: 'var(--text-sm)',
-                    color: 'var(--color-fg-muted)',
-                  }}
-                >
+                <div style={{ fontSize: 'var(--text-sm)', color: 'var(--color-fg-muted)' }}>
                   Listing agent
                 </div>
               </div>
