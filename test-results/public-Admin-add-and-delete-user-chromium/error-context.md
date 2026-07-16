@@ -6,23 +6,32 @@
 
 # Test info
 
-- Name: public.spec.ts >> Admin >> settings page loads
-- Location: tests/public.spec.ts:48:3
+- Name: public.spec.ts >> Admin >> add and delete user
+- Location: tests/public.spec.ts:64:3
 
 # Error details
 
 ```
 Error: expect(locator).toContainText(expected) failed
 
-Locator: locator('h2')
-Expected substring: "Profile"
-Error: strict mode violation: locator('h2') resolved to 2 elements:
-    1) <h2>Profile</h2> aka getByRole('heading', { name: 'Profile' })
-    2) <h2>General</h2> aka getByRole('heading', { name: 'General' })
+Locator: locator('td')
+Expected substring: "e2e-1784212253273@test.com"
+Error: strict mode violation: locator('td') resolved to 16 elements:
+    1) <td>…</td> aka getByRole('cell', { name: 'asrulazwan90@gmail.com(you)' })
+    2) <td>…</td> aka getByRole('cell', { name: 'ADMIN' })
+    3) <td>…</td> aka getByRole('cell', { name: 'Enabled' }).first()
+    4) <td>…</td> aka getByRole('cell', { name: '—' })
+    5) <td>…</td> aka getByRole('cell', { name: 'demo@berrylistings.local' })
+    6) <td>…</td> aka getByRole('cell', { name: 'USER' }).first()
+    7) <td>…</td> aka getByRole('cell', { name: 'Enabled' }).nth(1)
+    8) <td>…</td> aka getByRole('cell', { name: 'Delete user' }).first()
+    9) <td>…</td> aka getByRole('cell', { name: 'e2e-1784212193980@test.com' })
+    10) <td>…</td> aka getByRole('cell', { name: 'USER' }).nth(2)
+    ...
 
 Call log:
   - Expect "toContainText" with timeout 5000ms
-  - waiting for locator('h2')
+  - waiting for locator('td')
 
 ```
 
@@ -76,81 +85,106 @@ Call log:
           - /url: /
       - main [ref=e43]:
         - generic [ref=e44]:
-          - heading "Profile" [level=2] [ref=e45]
-          - paragraph [ref=e46]: Your account information.
-          - generic [ref=e47]:
-            - generic [ref=e48]: Name
-            - textbox [ref=e49]: Admin
-          - generic [ref=e50]:
-            - generic [ref=e51]: Email
-            - textbox [ref=e52]: asrulazwan90@gmail.com
-          - generic [ref=e53]:
-            - generic [ref=e54]: Role
-            - textbox [ref=e55]: Admin
-        - generic [ref=e56]:
-          - heading "General" [level=2] [ref=e57]
-          - paragraph [ref=e58]: Application settings coming soon.
-          - generic [ref=e59]:
-            - generic [ref=e60] [cursor=pointer]:
-              - checkbox "Email notifications for new listings" [disabled] [ref=e61]
-              - text: Email notifications for new listings
-            - generic [ref=e62] [cursor=pointer]:
-              - checkbox "Email notifications for inquiries" [disabled] [ref=e63]
-              - text: Email notifications for inquiries
-  - contentinfo [ref=e64]:
-    - generic [ref=e65]:
-      - generic [ref=e66]:
-        - generic [ref=e67]:
-          - link "Berry Listings" [ref=e68] [cursor=pointer]:
+          - textbox "new.user@email.com" [ref=e45]
+          - button "Add User" [active] [ref=e46] [cursor=pointer]
+        - table [ref=e48]:
+          - rowgroup [ref=e49]:
+            - row "Email Role Status Actions" [ref=e50]:
+              - columnheader "Email" [ref=e51]
+              - columnheader "Role" [ref=e52]
+              - columnheader "Status" [ref=e53]
+              - columnheader "Actions" [ref=e54]
+          - rowgroup [ref=e55]:
+            - row "asrulazwan90@gmail.com(you) ADMIN Enabled —" [ref=e56]:
+              - cell "asrulazwan90@gmail.com(you)" [ref=e57]:
+                - strong [ref=e58]: asrulazwan90@gmail.com
+                - text: (you)
+              - cell "ADMIN" [ref=e59]:
+                - generic [ref=e60]: ADMIN
+              - cell "Enabled" [ref=e61]:
+                - generic [ref=e62] [cursor=pointer]: Enabled
+              - cell "—" [ref=e63]
+            - row "demo@berrylistings.local USER Enabled Delete user" [ref=e64]:
+              - cell "demo@berrylistings.local" [ref=e65]:
+                - strong [ref=e66]: demo@berrylistings.local
+              - cell "USER" [ref=e67]:
+                - generic [ref=e68]: USER
+              - cell "Enabled" [ref=e69]:
+                - button "Enabled" [ref=e70] [cursor=pointer]
+              - cell "Delete user" [ref=e71]:
+                - button "Delete user" [ref=e72] [cursor=pointer]: ✕
+            - row "e2e-1784212193980@test.com USER Enabled Delete user" [ref=e73]:
+              - cell "e2e-1784212193980@test.com" [ref=e74]:
+                - strong [ref=e75]: e2e-1784212193980@test.com
+              - cell "USER" [ref=e76]:
+                - generic [ref=e77]: USER
+              - cell "Enabled" [ref=e78]:
+                - button "Enabled" [ref=e79] [cursor=pointer]
+              - cell "Delete user" [ref=e80]:
+                - button "Delete user" [ref=e81] [cursor=pointer]: ✕
+            - row "e2e-1784212253273@test.com USER Enabled Delete user" [ref=e82]:
+              - cell "e2e-1784212253273@test.com" [ref=e83]:
+                - strong [ref=e84]: e2e-1784212253273@test.com
+              - cell "USER" [ref=e85]:
+                - generic [ref=e86]: USER
+              - cell "Enabled" [ref=e87]:
+                - button "Enabled" [ref=e88] [cursor=pointer]
+              - cell "Delete user" [ref=e89]:
+                - button "Delete user" [ref=e90] [cursor=pointer]: ✕
+  - contentinfo [ref=e91]:
+    - generic [ref=e92]:
+      - generic [ref=e93]:
+        - generic [ref=e94]:
+          - link "Berry Listings" [ref=e95] [cursor=pointer]:
             - /url: /
-            - img [ref=e69]
+            - img [ref=e96]
             - text: Berry Listings
-          - paragraph [ref=e73]: A warmer way to browse, buy, and sell property — built for agents who answer their phone.
-        - generic [ref=e74]:
-          - heading "Explore" [level=4] [ref=e75]
-          - list [ref=e76]:
-            - listitem [ref=e77]:
-              - link "Buy" [ref=e78] [cursor=pointer]:
+          - paragraph [ref=e100]: A warmer way to browse, buy, and sell property — built for agents who answer their phone.
+        - generic [ref=e101]:
+          - heading "Explore" [level=4] [ref=e102]
+          - list [ref=e103]:
+            - listitem [ref=e104]:
+              - link "Buy" [ref=e105] [cursor=pointer]:
                 - /url: /listings
-            - listitem [ref=e79]:
-              - link "Rent" [ref=e80] [cursor=pointer]:
+            - listitem [ref=e106]:
+              - link "Rent" [ref=e107] [cursor=pointer]:
                 - /url: /listings
-            - listitem [ref=e81]:
-              - link "Sell with Berry" [ref=e82] [cursor=pointer]:
+            - listitem [ref=e108]:
+              - link "Sell with Berry" [ref=e109] [cursor=pointer]:
                 - /url: "#"
-            - listitem [ref=e83]:
-              - link "New developments" [ref=e84] [cursor=pointer]:
+            - listitem [ref=e110]:
+              - link "New developments" [ref=e111] [cursor=pointer]:
                 - /url: "#"
-        - generic [ref=e85]:
-          - heading "Company" [level=4] [ref=e86]
-          - list [ref=e87]:
-            - listitem [ref=e88]:
-              - link "About" [ref=e89] [cursor=pointer]:
+        - generic [ref=e112]:
+          - heading "Company" [level=4] [ref=e113]
+          - list [ref=e114]:
+            - listitem [ref=e115]:
+              - link "About" [ref=e116] [cursor=pointer]:
                 - /url: "#"
-            - listitem [ref=e90]:
-              - link "Agents" [ref=e91] [cursor=pointer]:
+            - listitem [ref=e117]:
+              - link "Agents" [ref=e118] [cursor=pointer]:
                 - /url: "#"
-            - listitem [ref=e92]:
-              - link "Careers" [ref=e93] [cursor=pointer]:
+            - listitem [ref=e119]:
+              - link "Careers" [ref=e120] [cursor=pointer]:
                 - /url: "#"
-            - listitem [ref=e94]:
-              - link "Contact" [ref=e95] [cursor=pointer]:
+            - listitem [ref=e121]:
+              - link "Contact" [ref=e122] [cursor=pointer]:
                 - /url: "#"
-        - generic [ref=e96]:
-          - heading "Account" [level=4] [ref=e97]
-          - list [ref=e98]:
-            - listitem [ref=e99]:
-              - link "Sign in" [ref=e100] [cursor=pointer]:
+        - generic [ref=e123]:
+          - heading "Account" [level=4] [ref=e124]
+          - list [ref=e125]:
+            - listitem [ref=e126]:
+              - link "Sign in" [ref=e127] [cursor=pointer]:
                 - /url: /login
-            - listitem [ref=e101]:
-              - link "Agent dashboard" [ref=e102] [cursor=pointer]:
+            - listitem [ref=e128]:
+              - link "Agent dashboard" [ref=e129] [cursor=pointer]:
                 - /url: /admin
-            - listitem [ref=e103]:
-              - link "Help center" [ref=e104] [cursor=pointer]:
+            - listitem [ref=e130]:
+              - link "Help center" [ref=e131] [cursor=pointer]:
                 - /url: "#"
-      - generic [ref=e105]:
-        - generic [ref=e106]: © 2026 Berry Listings. All rights reserved.
-        - generic [ref=e107]: Made for people, not portals.
+      - generic [ref=e132]:
+        - generic [ref=e133]: © 2026 Berry Listings. All rights reserved.
+        - generic [ref=e134]: Made for people, not portals.
 ```
 
 # Test source
@@ -205,8 +239,7 @@ Call log:
   47 | 
   48 |   test('settings page loads', async ({ page }) => {
   49 |     await page.goto('/admin/settings');
-> 50 |     await expect(page.locator('h2')).toContainText('Profile');
-     |                                      ^ Error: expect(locator).toContainText(expected) failed
+  50 |     await expect(page.locator('h2')).toContainText('Profile');
   51 |   });
   52 | 
   53 |   test('new listing form opens', async ({ page }) => {
@@ -226,7 +259,8 @@ Call log:
   67 |     await page.locator('input[type="email"]').fill(email);
   68 |     await page.locator('button:has-text("Add User")').click();
   69 |     await page.waitForTimeout(1500);
-  70 |     await expect(page.locator('td')).toContainText(email);
+> 70 |     await expect(page.locator('td')).toContainText(email);
+     |                                      ^ Error: expect(locator).toContainText(expected) failed
   71 |     const row = page.locator(`tr:has-text("${email}")`);
   72 |     await row.locator('button[aria-label="Delete user"]').click();
   73 |     await row.locator('button[aria-label="Confirm delete"]').click();

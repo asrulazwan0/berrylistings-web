@@ -7,14 +7,31 @@
 # Test info
 
 - Name: public.spec.ts >> Admin >> users page loads
-- Location: tests/public.spec.ts:66:3
+- Location: tests/public.spec.ts:43:3
 
 # Error details
 
 ```
-TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.
+Error: expect(locator).toContainText(expected) failed
+
+Locator: locator('td')
+Expected substring: "asrulazwan90@gmail.com"
+Error: strict mode violation: locator('td') resolved to 12 elements:
+    1) <td>…</td> aka getByRole('cell', { name: 'asrulazwan90@gmail.com(you)' })
+    2) <td>…</td> aka getByRole('cell', { name: 'ADMIN' })
+    3) <td>…</td> aka getByRole('cell', { name: 'Enabled' }).first()
+    4) <td>…</td> aka getByRole('cell', { name: '—' })
+    5) <td>…</td> aka getByRole('cell', { name: 'demo@berrylistings.local' })
+    6) <td>…</td> aka getByRole('cell', { name: 'USER' }).first()
+    7) <td>…</td> aka getByRole('cell', { name: 'Enabled' }).nth(1)
+    8) <td>…</td> aka getByRole('cell', { name: 'Delete user' }).first()
+    9) <td>…</td> aka getByRole('cell', { name: 'e2e-1784212193980@test.com' })
+    10) <td>…</td> aka getByRole('cell', { name: 'USER' }).nth(2)
+    ...
+
 Call log:
-  - waiting for locator('.admin-shell, .stat-card, nav[aria-label="Admin"]') to be visible
+  - Expect "toContainText" with timeout 10000ms
+  - waiting for locator('td')
 
 ```
 
@@ -35,82 +52,130 @@ Call log:
           - /url: "#"
         - link "Agents" [ref=e13] [cursor=pointer]:
           - /url: "#"
-      - generic [ref=e14]:
-        - link "Sign in" [ref=e15] [cursor=pointer]:
-          - /url: /login
-        - link "List a property" [ref=e16] [cursor=pointer]:
-          - /url: /login
-  - main [ref=e17]:
-    - generic [ref=e18]:
-      - generic [ref=e19]: For agents & admins
-      - heading "Manage your listings in one calm place." [level=2] [ref=e20]
-      - paragraph [ref=e21]: Publish new properties, update pricing, and respond to buyer inquiries — all from the Berry agent dashboard.
-    - generic [ref=e23]:
-      - generic [ref=e24]: Development Login
-      - heading "Sign in to Berry Listings" [level=1] [ref=e25]
-      - paragraph [ref=e26]: Dev mode — enter your registered email to sign in.
-      - paragraph [ref=e27]: Too many login attempts, please try again later.
+      - link "Dashboard" [ref=e15] [cursor=pointer]:
+        - /url: /admin
+  - generic [ref=e16]:
+    - complementary "Admin navigation" [ref=e17]:
+      - link "Berry Admin" [ref=e18] [cursor=pointer]:
+        - /url: /
+        - img [ref=e19]
+        - text: Berry Admin
+      - navigation "Admin" [ref=e23]:
+        - link "Overview" [ref=e24] [cursor=pointer]:
+          - /url: /admin
+        - link "Listings" [ref=e25] [cursor=pointer]:
+          - /url: /admin/listings
+        - link "Users" [ref=e26] [cursor=pointer]:
+          - /url: /admin/users
+        - link "Settings" [ref=e27] [cursor=pointer]:
+          - /url: /admin/settings
       - generic [ref=e28]:
-        - text: Email address
-        - textbox "Email address" [ref=e29]:
-          - /placeholder: asrulazwan90@gmail.com
-          - text: asrulazwan90@gmail.com
-        - button "Sign in as Admin" [ref=e30] [cursor=pointer]
-      - paragraph [ref=e31]: "Also try: demo@berrylistings.local (regular user)"
-  - contentinfo [ref=e32]:
-    - generic [ref=e33]:
-      - generic [ref=e34]:
-        - generic [ref=e35]:
-          - link "Berry Listings" [ref=e36] [cursor=pointer]:
+        - generic [ref=e29]:
+          - generic [ref=e30]: A
+          - generic [ref=e31]:
+            - generic [ref=e32]: Admin
+            - generic [ref=e33]: Admin
+        - button "Sign out" [ref=e34] [cursor=pointer]
+    - generic [ref=e35]:
+      - banner [ref=e36]:
+        - generic [ref=e38]:
+          - generic [ref=e39]: Berry Admin
+          - heading "Dashboard" [level=1] [ref=e40]
+        - link "View site" [ref=e42] [cursor=pointer]:
+          - /url: /
+      - main [ref=e43]:
+        - generic [ref=e44]:
+          - textbox "new.user@email.com" [ref=e45]
+          - button "Add User" [ref=e46] [cursor=pointer]
+        - table [ref=e48]:
+          - rowgroup [ref=e49]:
+            - row "Email Role Status Actions" [ref=e50]:
+              - columnheader "Email" [ref=e51]
+              - columnheader "Role" [ref=e52]
+              - columnheader "Status" [ref=e53]
+              - columnheader "Actions" [ref=e54]
+          - rowgroup [ref=e55]:
+            - row "asrulazwan90@gmail.com(you) ADMIN Enabled —" [ref=e56]:
+              - cell "asrulazwan90@gmail.com(you)" [ref=e57]:
+                - strong [ref=e58]: asrulazwan90@gmail.com
+                - text: (you)
+              - cell "ADMIN" [ref=e59]:
+                - generic [ref=e60]: ADMIN
+              - cell "Enabled" [ref=e61]:
+                - generic [ref=e62] [cursor=pointer]: Enabled
+              - cell "—" [ref=e63]
+            - row "demo@berrylistings.local USER Enabled Delete user" [ref=e64]:
+              - cell "demo@berrylistings.local" [ref=e65]:
+                - strong [ref=e66]: demo@berrylistings.local
+              - cell "USER" [ref=e67]:
+                - generic [ref=e68]: USER
+              - cell "Enabled" [ref=e69]:
+                - button "Enabled" [ref=e70] [cursor=pointer]
+              - cell "Delete user" [ref=e71]:
+                - button "Delete user" [ref=e72] [cursor=pointer]: ✕
+            - row "e2e-1784212193980@test.com USER Enabled Delete user" [ref=e73]:
+              - cell "e2e-1784212193980@test.com" [ref=e74]:
+                - strong [ref=e75]: e2e-1784212193980@test.com
+              - cell "USER" [ref=e76]:
+                - generic [ref=e77]: USER
+              - cell "Enabled" [ref=e78]:
+                - button "Enabled" [ref=e79] [cursor=pointer]
+              - cell "Delete user" [ref=e80]:
+                - button "Delete user" [ref=e81] [cursor=pointer]: ✕
+  - contentinfo [ref=e82]:
+    - generic [ref=e83]:
+      - generic [ref=e84]:
+        - generic [ref=e85]:
+          - link "Berry Listings" [ref=e86] [cursor=pointer]:
             - /url: /
-            - img [ref=e37]
+            - img [ref=e87]
             - text: Berry Listings
-          - paragraph [ref=e41]: A warmer way to browse, buy, and sell property — built for agents who answer their phone.
-        - generic [ref=e42]:
-          - heading "Explore" [level=4] [ref=e43]
-          - list [ref=e44]:
-            - listitem [ref=e45]:
-              - link "Buy" [ref=e46] [cursor=pointer]:
+          - paragraph [ref=e91]: A warmer way to browse, buy, and sell property — built for agents who answer their phone.
+        - generic [ref=e92]:
+          - heading "Explore" [level=4] [ref=e93]
+          - list [ref=e94]:
+            - listitem [ref=e95]:
+              - link "Buy" [ref=e96] [cursor=pointer]:
                 - /url: /listings
-            - listitem [ref=e47]:
-              - link "Rent" [ref=e48] [cursor=pointer]:
+            - listitem [ref=e97]:
+              - link "Rent" [ref=e98] [cursor=pointer]:
                 - /url: /listings
-            - listitem [ref=e49]:
-              - link "Sell with Berry" [ref=e50] [cursor=pointer]:
+            - listitem [ref=e99]:
+              - link "Sell with Berry" [ref=e100] [cursor=pointer]:
                 - /url: "#"
-            - listitem [ref=e51]:
-              - link "New developments" [ref=e52] [cursor=pointer]:
+            - listitem [ref=e101]:
+              - link "New developments" [ref=e102] [cursor=pointer]:
                 - /url: "#"
-        - generic [ref=e53]:
-          - heading "Company" [level=4] [ref=e54]
-          - list [ref=e55]:
-            - listitem [ref=e56]:
-              - link "About" [ref=e57] [cursor=pointer]:
+        - generic [ref=e103]:
+          - heading "Company" [level=4] [ref=e104]
+          - list [ref=e105]:
+            - listitem [ref=e106]:
+              - link "About" [ref=e107] [cursor=pointer]:
                 - /url: "#"
-            - listitem [ref=e58]:
-              - link "Agents" [ref=e59] [cursor=pointer]:
+            - listitem [ref=e108]:
+              - link "Agents" [ref=e109] [cursor=pointer]:
                 - /url: "#"
-            - listitem [ref=e60]:
-              - link "Careers" [ref=e61] [cursor=pointer]:
+            - listitem [ref=e110]:
+              - link "Careers" [ref=e111] [cursor=pointer]:
                 - /url: "#"
-            - listitem [ref=e62]:
-              - link "Contact" [ref=e63] [cursor=pointer]:
+            - listitem [ref=e112]:
+              - link "Contact" [ref=e113] [cursor=pointer]:
                 - /url: "#"
-        - generic [ref=e64]:
-          - heading "Account" [level=4] [ref=e65]
-          - list [ref=e66]:
-            - listitem [ref=e67]:
-              - link "Sign in" [ref=e68] [cursor=pointer]:
+        - generic [ref=e114]:
+          - heading "Account" [level=4] [ref=e115]
+          - list [ref=e116]:
+            - listitem [ref=e117]:
+              - link "Sign in" [ref=e118] [cursor=pointer]:
                 - /url: /login
-            - listitem [ref=e69]:
-              - link "Agent dashboard" [ref=e70] [cursor=pointer]:
+            - listitem [ref=e119]:
+              - link "Agent dashboard" [ref=e120] [cursor=pointer]:
                 - /url: /admin
-            - listitem [ref=e71]:
-              - link "Help center" [ref=e72] [cursor=pointer]:
+            - listitem [ref=e121]:
+              - link "Help center" [ref=e122] [cursor=pointer]:
                 - /url: "#"
-      - generic [ref=e73]:
-        - generic [ref=e74]: © 2026 Berry Listings. All rights reserved.
-        - generic [ref=e75]: Made for people, not portals.
+      - generic [ref=e123]:
+        - generic [ref=e124]: © 2026 Berry Listings. All rights reserved.
+        - generic [ref=e125]: Made for people, not portals.
 ```
 
 # Test source
@@ -118,92 +183,86 @@ Call log:
 ```ts
   1  | import { test, expect } from '@playwright/test';
   2  | 
-  3  | async function loginAsAdmin(page) {
-  4  |   await page.goto('/login');
-  5  |   await page.locator('input[type="email"]').fill('asrulazwan90@gmail.com');
-  6  |   await page.locator('button:has-text("Sign in as Admin")').click();
-> 7  |   await page.waitForSelector('.admin-shell, .stat-card, nav[aria-label="Admin"]', { timeout: 10000 });
-     |              ^ TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.
-  8  | }
-  9  | 
-  10 | test.describe('Public Site', () => {
-  11 |   test('homepage loads', async ({ page }) => {
-  12 |     await page.goto('/');
-  13 |     await expect(page.locator('h1')).toContainText('Find a home');
-  14 |     await expect(page.locator('.property-card').first()).toBeVisible({ timeout: 10000 });
-  15 |   });
-  16 | 
-  17 |   test('listings page shows properties', async ({ page }) => {
-  18 |     await page.goto('/listings');
-  19 |     await expect(page.locator('.property-card').first()).toBeVisible({ timeout: 10000 });
-  20 |   });
-  21 | 
-  22 |   test('property detail page loads', async ({ page }) => {
-  23 |     await page.goto('/listings');
-  24 |     await page.locator('.property-card__link').first().click();
-  25 |     await expect(page.locator('h1').first()).toBeVisible({ timeout: 10000 });
-  26 |   });
-  27 | 
-  28 |   test('nav has correct public links', async ({ page }) => {
-  29 |     await page.goto('/');
-  30 |     await expect(page.locator('nav[aria-label="Primary"]')).toContainText('Sell with Berry');
-  31 |     await expect(page.locator('nav[aria-label="Primary"]')).toContainText('Agents');
-  32 |     await expect(page.locator('header .nav__signin')).toBeVisible();
-  33 |   });
-  34 | 
-  35 |   test('footer exists', async ({ page }) => {
-  36 |     await page.goto('/');
-  37 |     await expect(page.locator('footer, [class*="footer"]').first()).toBeVisible({ timeout: 5000 });
-  38 |   });
-  39 | });
-  40 | 
-  41 | test.describe('Auth', () => {
-  42 |   test('login succeeds', async ({ page }) => {
-  43 |     await loginAsAdmin(page);
-  44 |     await expect(page.locator('nav[aria-label="Admin"]')).toBeVisible();
-  45 |   });
-  46 | 
-  47 |   test('nav hides sign-in when authenticated', async ({ page }) => {
-  48 |     await loginAsAdmin(page);
-  49 |     await expect(page.locator('header .nav__signin')).not.toBeVisible();
-  50 |   });
-  51 | });
+  3  | test.describe('Public', () => {
+  4  |   test('homepage loads', async ({ page }) => {
+  5  |     await page.goto('/');
+  6  |     await expect(page.locator('h1')).toContainText('Find a home');
+  7  |   });
+  8  | 
+  9  |   test('listings page has properties', async ({ page }) => {
+  10 |     await page.goto('/listings');
+  11 |     await expect(page.locator('.property-card').first()).toBeVisible({ timeout: 10000 });
+  12 |   });
+  13 | 
+  14 |   test('property detail page works', async ({ page }) => {
+  15 |     await page.goto('/listings');
+  16 |     await page.locator('.property-card__link').first().click();
+  17 |     await expect(page.locator('h1').first()).toBeVisible({ timeout: 10000 });
+  18 |   });
+  19 | 
+  20 |   test('nav has correct links', async ({ page }) => {
+  21 |     await page.goto('/');
+  22 |     await expect(page.locator('nav[aria-label="Primary"]')).toContainText('Agents');
+  23 |     await expect(page.locator('header .nav__signin')).toBeVisible();
+  24 |   });
+  25 | 
+  26 |   test('login page renders', async ({ page }) => {
+  27 |     await page.goto('/login');
+  28 |     await expect(page.locator('input[type="email"]')).toBeVisible();
+  29 |   });
+  30 | });
+  31 | 
+  32 | test.describe('Admin', () => {
+  33 |   test('overview loads', async ({ page }) => {
+  34 |     await page.goto('/admin');
+  35 |     await expect(page.locator('.stat-card').first()).toBeVisible({ timeout: 10000 });
+  36 |   });
+  37 | 
+  38 |   test('listings table loads', async ({ page }) => {
+  39 |     await page.goto('/admin/listings');
+  40 |     await expect(page.locator('.data-table')).toBeVisible({ timeout: 10000 });
+  41 |   });
+  42 | 
+  43 |   test('users page loads', async ({ page }) => {
+  44 |     await page.goto('/admin/users');
+> 45 |     await expect(page.locator('td')).toContainText('asrulazwan90@gmail.com', { timeout: 10000 });
+     |                                      ^ Error: expect(locator).toContainText(expected) failed
+  46 |   });
+  47 | 
+  48 |   test('settings page loads', async ({ page }) => {
+  49 |     await page.goto('/admin/settings');
+  50 |     await expect(page.locator('h2')).toContainText('Profile');
+  51 |   });
   52 | 
-  53 | test.describe('Admin', () => {
-  54 |   test.beforeEach(async ({ page }) => { await loginAsAdmin(page); });
-  55 | 
-  56 |   test('overview shows stats', async ({ page }) => {
-  57 |     await page.goto('/admin');
-  58 |     await expect(page.locator('.stat-card').first()).toBeVisible({ timeout: 5000 });
-  59 |   });
-  60 | 
-  61 |   test('listings shows table', async ({ page }) => {
-  62 |     await page.goto('/admin/listings');
-  63 |     await expect(page.locator('.data-table')).toBeVisible({ timeout: 5000 });
-  64 |   });
-  65 | 
-  66 |   test('users page loads', async ({ page }) => {
-  67 |     await page.goto('/admin/users');
-  68 |     await expect(page.locator('h1')).toContainText('Users');
-  69 |   });
-  70 | 
-  71 |   test('settings page loads', async ({ page }) => {
-  72 |     await page.goto('/admin/settings');
-  73 |     await expect(page.locator('h2')).toContainText('Profile');
-  74 |   });
-  75 | 
-  76 |   test('sidebar navigates', async ({ page }) => {
-  77 |     await page.locator('nav[aria-label="Admin"] >> text=Users').click();
-  78 |     await page.waitForURL('**/admin/users', { timeout: 5000 });
-  79 |     await expect(page.locator('h1')).toContainText('Users');
-  80 |   });
-  81 | 
-  82 |   test('cannot disable self on users page', async ({ page }) => {
-  83 |     await page.goto('/admin/users');
-  84 |     const myRow = page.locator('tr:has-text("(you)")');
-  85 |     await expect(myRow).toBeVisible({ timeout: 5000 });
-  86 |     await expect(myRow.locator('button.chip')).not.toBeVisible();
-  87 |   });
-  88 | });
-  89 | 
+  53 |   test('new listing form opens', async ({ page }) => {
+  54 |     await page.goto('/admin/listings');
+  55 |     await page.locator('button:has-text("New listing")').click();
+  56 |     await expect(page.locator('.modal-panel')).toBeVisible({ timeout: 5000 });
+  57 |   });
+  58 | 
+  59 |   test('cannot disable self', async ({ page }) => {
+  60 |     await page.goto('/admin/users');
+  61 |     await expect(page.locator('tr:has-text("(you)")')).toBeVisible({ timeout: 5000 });
+  62 |   });
+  63 | 
+  64 |   test('add and delete user', async ({ page }) => {
+  65 |     await page.goto('/admin/users');
+  66 |     const email = `e2e-${Date.now()}@test.com`;
+  67 |     await page.locator('input[type="email"]').fill(email);
+  68 |     await page.locator('button:has-text("Add User")').click();
+  69 |     await page.waitForTimeout(1500);
+  70 |     await expect(page.locator('td')).toContainText(email);
+  71 |     const row = page.locator(`tr:has-text("${email}")`);
+  72 |     await row.locator('button[aria-label="Delete user"]').click();
+  73 |     await row.locator('button[aria-label="Confirm delete"]').click();
+  74 |     await page.waitForTimeout(500);
+  75 |     await expect(page.locator('td')).not.toContainText(email);
+  76 |   });
+  77 | 
+  78 |   test('nav shows Dashboard when authed', async ({ page }) => {
+  79 |     await page.goto('/');
+  80 |     await expect(page.locator('header')).toContainText('Dashboard');
+  81 |   });
+  82 | });
+  83 | 
 ```
