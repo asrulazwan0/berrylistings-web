@@ -2,12 +2,21 @@ import { useEffect, useState } from 'react';
 import { getUsers, createUser, updateUser, deleteUser, type UserItem } from '../../api/client';
 import '../../styles/admin.css';
 
+function getMyEmail(): string {
+  try {
+    const u = JSON.parse(localStorage.getItem('berry_user') ?? '{}');
+    return u.email ?? '';
+  } catch { return ''; }
+}
+
 export default function Users() {
+  const myEmail = getMyEmail();
   const [users, setUsers] = useState<UserItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [newEmail, setNewEmail] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
+  const [confirmToggle, setConfirmToggle] = useState<string | null>(null);
 
   const fetchUsers = () => {
     getUsers()
@@ -30,16 +39,24 @@ export default function Users() {
     } catch (err) { setError((err as Error).message); }
   }
 
-  async function handleToggle(uuid: string, enabled: boolean) {
-    await updateUser(uuid, { isEnabled: !enabled });
-    setUsers((prev) => prev.map((u) => u.uuid === uuid ? { ...u, isEnabled: !enabled } : u));
+  function handleToggle(uuid: string, enabled: boolean) {
+    if (confirmToggle !== uuid) { setConfirmToggle(uuid); return; }
+    updateUser(uuid, { isEnabled: !enabled })
+      .then(() => {
+        setConfirmToggle(null);
+        setUsers((prev) => prev.map((u) => u.uuid === uuid ? { ...u, isEnabled: !enabled } : u));
+      })
+      .catch((e) => setError(e.message));
   }
 
-  async function handleDelete(uuid: string) {
+  function handleDelete(uuid: string) {
     if (confirmDelete !== uuid) { setConfirmDelete(uuid); return; }
-    await deleteUser(uuid);
-    setConfirmDelete(null);
-    setUsers((prev) => prev.filter((u) => u.uuid !== uuid));
+    deleteUser(uuid)
+      .then(() => {
+        setConfirmDelete(null);
+        setUsers((prev) => prev.filter((u) => u.uuid !== uuid));
+      })
+      .catch((e) => setError(e.message));
   }
 
   return (
@@ -75,31 +92,44 @@ export default function Users() {
                 <tbody>
                   {users.length === 0 ? (
                     <tr><td colSpan={4} style={{ textAlign: 'center', padding: 'var(--space-8)', color: 'var(--color-fg-muted)' }}>No users found.</td></tr>
-                  ) : users.map((u) => (
-                    <tr key={u.uuid}>
-                      <td><strong>{u.email}</strong></td>
-                      <td><span className={`badge ${u.role === 'ADMIN' ? 'badge--success' : 'badge--muted'}`}>{u.role}</span></td>
-                      <td>
-                        <button
-                          className={`chip ${u.isEnabled ? '' : ''}`}
-                          style={u.isEnabled ? { borderColor: 'var(--color-success)', color: 'var(--color-success)' } : { opacity: 0.5 }}
-                          onClick={() => handleToggle(u.uuid, u.isEnabled)}
-                        >
-                          {u.isEnabled ? 'Enabled' : 'Disabled'}
-                        </button>
-                      </td>
-                      <td style={{ textAlign: 'right' }}>
-                        <button
-                          className="icon-btn"
-                          style={confirmDelete === u.uuid ? { color: 'var(--color-destructive)', borderColor: 'var(--color-destructive)' } : undefined}
-                          onClick={() => handleDelete(u.uuid)}
-                          aria-label={confirmDelete === u.uuid ? 'Confirm delete' : 'Delete user'}
-                        >
-                          {confirmDelete === u.uuid ? '✓' : '✕'}
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
+                  ) : users.map((u) => {
+                    const isMe = u.email === myEmail;
+                    return (
+                      <tr key={u.uuid}>
+                        <td><strong>{u.email}</strong>{isMe && <span style={{ fontSize: 'var(--text-xs)', color: 'var(--color-fg-subtle)', marginLeft: 6 }}>(you)</span>}</td>
+                        <td><span className={`badge ${u.role === 'ADMIN' ? 'badge--success' : 'badge--muted'}`}>{u.role}</span></td>
+                        <td>
+                          {isMe ? (
+                            <span className="chip" style={{ opacity: 0.6, cursor: 'not-allowed' }} title="Cannot disable yourself">
+                              {u.isEnabled ? 'Enabled' : 'Disabled'}
+                            </span>
+                          ) : confirmToggle === u.uuid ? (
+                            <button className="chip" style={{ borderColor: 'var(--color-accent)', color: 'var(--color-accent)' }}
+                              onClick={() => handleToggle(u.uuid, u.isEnabled)}>
+                              Confirm {u.isEnabled ? 'disable' : 'enable'}?
+                            </button>
+                          ) : (
+                            <button className="chip" style={u.isEnabled ? { borderColor: 'var(--color-success)', color: 'var(--color-success)' } : { opacity: 0.5 }}
+                              onClick={() => handleToggle(u.uuid, u.isEnabled)}>
+                              {u.isEnabled ? 'Enabled' : 'Disabled'}
+                            </button>
+                          )}
+                        </td>
+                        <td style={{ textAlign: 'right' }}>
+                          {isMe ? (
+                            <span style={{ fontSize: 'var(--text-xs)', color: 'var(--color-fg-subtle)' }}>—</span>
+                          ) : (
+                            <button className="icon-btn"
+                              style={confirmDelete === u.uuid ? { color: 'var(--color-destructive)', borderColor: 'var(--color-destructive)' } : undefined}
+                              onClick={() => handleDelete(u.uuid)}
+                              aria-label={confirmDelete === u.uuid ? 'Confirm delete' : 'Delete user'}>
+                              {confirmDelete === u.uuid ? '✓' : '✕'}
+                            </button>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
