@@ -83,11 +83,11 @@ export function getUser(uuid: string): Promise<UserResponse> {
   return fetchApi<UserResponse>(`/users/${uuid}`);
 }
 
-export function createUser(email: string): Promise<UserResponse> {
-  return fetchApi<UserResponse>('/users', { method: 'POST', body: JSON.stringify({ email }) });
+export function createUser(email: string, role: 'ADMIN' | 'USER' = 'USER'): Promise<UserResponse> {
+  return fetchApi<UserResponse>('/users', { method: 'POST', body: JSON.stringify({ email, role }) });
 }
 
-export function updateUser(uuid: string, data: { email?: string; isEnabled?: boolean }): Promise<UserResponse> {
+export function updateUser(uuid: string, data: { email?: string; isEnabled?: boolean; role?: string }): Promise<UserResponse> {
   return fetchApi<UserResponse>(`/users/${uuid}`, { method: 'PUT', body: JSON.stringify(data) });
 }
 
