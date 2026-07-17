@@ -20,7 +20,7 @@ export interface UserResponse {
   data: UserItem;
 }
 
-async function fetchApi<T>(
+export async function fetchApi<T>(
   endpoint: string,
   options: RequestInit = {},
 ): Promise<T> {
