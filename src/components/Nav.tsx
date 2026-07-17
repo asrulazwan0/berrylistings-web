@@ -1,8 +1,11 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function Nav() {
   const { isAuthenticated } = useAuth();
+  const { pathname } = useLocation();
+
+  if (pathname.startsWith('/admin')) return null;
 
   return (
     <header className="nav">
@@ -15,26 +18,13 @@ export default function Nav() {
           </svg>
           Berry Listings
         </Link>
-
-        <nav className="nav__links" aria-label="Primary">
-          <a href="#">Sell with Berry</a>
-          <a href="#">Agents</a>
-        </nav>
-
         <div className="nav__actions">
           {!isAuthenticated && (
-            <Link className="btn btn--ghost btn--sm nav__signin" to="/login">
-              Sign in
-            </Link>
+            <Link className="btn btn--ghost btn--sm nav__signin" to="/login">Sign in</Link>
           )}
           <Link className="btn btn--primary btn--sm" to={isAuthenticated ? '/admin' : '/login'}>
             {isAuthenticated ? 'Dashboard' : 'List a property'}
           </Link>
-          <button className="nav__menu-btn" type="button" aria-label="Open menu" aria-expanded="false">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-              <path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-            </svg>
-          </button>
         </div>
       </div>
     </header>

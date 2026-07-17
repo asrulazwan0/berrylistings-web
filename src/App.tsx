@@ -2,14 +2,17 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import SkipLink from './components/SkipLink';
 import Nav from './components/Nav';
-import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
+import AdminLayout from './components/AdminLayout';
 import Home from './pages/Home';
 import Listings from './pages/Listings';
 import PropertyDetail from './pages/PropertyDetail';
 import Login from './pages/Login';
+import Overview from './pages/admin/Overview';
 import AdminDashboard from './pages/admin/Dashboard';
 import Users from './pages/admin/Users';
+import Settings from './pages/admin/Settings';
+import Roles from './pages/admin/Roles';
 
 export default function App() {
   return (
@@ -17,15 +20,19 @@ export default function App() {
       <AuthProvider>
         <SkipLink />
         <Nav />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/listings" element={<Listings />} />
-          <Route path="/property/:id" element={<PropertyDetail />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
-          <Route path="/admin/users" element={<ProtectedRoute><Users /></ProtectedRoute>} />
-        </Routes>
-        <Footer />
+        <div style={{ flex: 1 }}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/listings" element={<Listings />} />
+            <Route path="/property/:id" element={<PropertyDetail />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/admin" element={<ProtectedRoute><AdminLayout><Overview /></AdminLayout></ProtectedRoute>} />
+            <Route path="/admin/listings" element={<ProtectedRoute scope="properties:create"><AdminLayout><AdminDashboard /></AdminLayout></ProtectedRoute>} />
+            <Route path="/admin/users" element={<ProtectedRoute scope="users:view"><AdminLayout><Users /></AdminLayout></ProtectedRoute>} />
+            <Route path="/admin/settings" element={<ProtectedRoute><AdminLayout><Settings /></AdminLayout></ProtectedRoute>} />
+            <Route path="/admin/roles" element={<ProtectedRoute scope="users:edit"><AdminLayout><Roles /></AdminLayout></ProtectedRoute>} />
+          </Routes>
+        </div>
       </AuthProvider>
     </BrowserRouter>
   );

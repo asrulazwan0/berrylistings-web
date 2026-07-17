@@ -5,8 +5,9 @@ const API_BASE = '/api/v1';
 export interface UserItem {
   uuid: string;
   email: string;
-  role: 'USER' | 'ADMIN';
+  role: string;
   isEnabled: boolean;
+  permissions: string[];
 }
 
 export interface UsersResponse {
@@ -19,7 +20,7 @@ export interface UserResponse {
   data: UserItem;
 }
 
-async function fetchApi<T>(
+export async function fetchApi<T>(
   endpoint: string,
   options: RequestInit = {},
 ): Promise<T> {
@@ -82,11 +83,11 @@ export function getUser(uuid: string): Promise<UserResponse> {
   return fetchApi<UserResponse>(`/users/${uuid}`);
 }
 
-export function createUser(email: string): Promise<UserResponse> {
-  return fetchApi<UserResponse>('/users', { method: 'POST', body: JSON.stringify({ email }) });
+export function createUser(email: string, role = 'USER'): Promise<UserResponse> {
+  return fetchApi<UserResponse>('/users', { method: 'POST', body: JSON.stringify({ email, role }) });
 }
 
-export function updateUser(uuid: string, data: { email?: string; isEnabled?: boolean }): Promise<UserResponse> {
+export function updateUser(uuid: string, data: { email?: string; isEnabled?: boolean; role?: string }): Promise<UserResponse> {
   return fetchApi<UserResponse>(`/users/${uuid}`, { method: 'PUT', body: JSON.stringify(data) });
 }
 

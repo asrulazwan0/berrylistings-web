@@ -19,6 +19,8 @@ html {
 body {
   margin: 0;
   min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
   background: var(--color-bg);
   color: var(--color-fg);
   font-family: var(--font-body);
@@ -286,6 +288,15 @@ p {
   color: var(--color-primary);
 }
 
+.btn--danger {
+  background: var(--color-destructive);
+  color: white;
+}
+
+.btn--danger:hover {
+  opacity: 0.9;
+}
+
 .btn--sm {
   min-height: 40px;
   padding-inline: var(--space-4);
@@ -484,7 +495,7 @@ button:disabled {
 .field {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--space-3);
 }
 
 .field label {
@@ -630,8 +641,8 @@ button:disabled {
 }
 
 .badge--pending {
-  background: var(--color-accent-light);
-  color: var(--color-primary-dark);
+  background: #fef3c7;
+  color: #92400e;
 }
 
 .badge--muted {
@@ -643,7 +654,8 @@ button:disabled {
 .footer {
   border-top: 1px solid var(--color-border);
   background: var(--color-bg-alt);
-  padding-block: var(--space-8) var(--space-6);
+  padding-block: var(--space-8);
+  margin-top: auto;
 }
 
 .footer__grid {
