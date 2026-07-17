@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getUsers, createUser, updateUser, deleteUser, type UserItem } from '../../api/client';
+import { getUsers, createUser, updateUser, deleteUser, fetchApi, type UserItem } from '../../api/client';
 import '../../styles/admin.css';
 
 function getMyEmail(): string {
@@ -11,20 +11,24 @@ type ModalMode = 'add' | 'edit' | 'toggle' | 'delete' | null;
 export default function Users() {
   const myEmail = getMyEmail();
   const [users, setUsers] = useState<UserItem[]>([]);
+  const [availableRoles, setAvailableRoles] = useState<string[]>(['ADMIN', 'USER']);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [modal, setModal] = useState<{ mode: ModalMode; user: UserItem | null }>({ mode: null, user: null });
   const [formEmail, setFormEmail] = useState('');
-  const [formRole, setFormRole] = useState<'ADMIN' | 'USER'>('USER');
+  const [formRole, setFormRole] = useState('USER');
 
   const fetchUsers = () => {
     setLoading(true);
     getUsers().then((res) => setUsers(res.data)).catch((e) => setError(e.message)).finally(() => setLoading(false));
   };
-  useEffect(() => { fetchUsers(); }, []);
+  useEffect(() => {
+    fetchUsers();
+    fetchApi<{ data: { name: string }[] }>('/roles').then((r) => setAvailableRoles(r.data.map((x) => x.name))).catch(() => {});
+  }, []);
 
   const openModal = (mode: ModalMode, user: UserItem | null = null) => {
-    if (mode === 'edit' && user) { setFormEmail(user.email); setFormRole(user.role as 'ADMIN' | 'USER'); }
+    if (mode === 'edit' && user) { setFormEmail(user.email); setFormRole(user.role); }
     if (mode === 'add') { setFormEmail(''); setFormRole('USER'); }
     setModal({ mode, user });
     setError(null);
@@ -115,9 +119,8 @@ export default function Users() {
                 <div className="field">
                   <label htmlFor="add-role">Role</label>
                   <div className="select-wrapper">
-                    <select className="select" id="add-role" value={formRole} onChange={(e) => setFormRole(e.target.value as 'ADMIN' | 'USER')}>
-                      <option value="USER">User</option>
-                      <option value="ADMIN">Admin</option>
+                    <select className="select" id="add-role" value={formRole} onChange={(e) => setFormRole(e.target.value)}>
+                      {availableRoles.map((r) => <option key={r} value={r}>{r}</option>)}
                     </select>
                   </div>
                 </div>
@@ -137,9 +140,8 @@ export default function Users() {
                 <div className="field">
                   <label htmlFor="edit-role">Role</label>
                   <div className="select-wrapper">
-                    <select className="select" id="edit-role" value={formRole} onChange={(e) => setFormRole(e.target.value as 'ADMIN' | 'USER')}>
-                      <option value="USER">User</option>
-                      <option value="ADMIN">Admin</option>
+                    <select className="select" id="edit-role" value={formRole} onChange={(e) => setFormRole(e.target.value)}>
+                      {availableRoles.map((r) => <option key={r} value={r}>{r}</option>)}
                     </select>
                   </div>
                 </div>

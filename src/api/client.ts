@@ -5,7 +5,7 @@ const API_BASE = '/api/v1';
 export interface UserItem {
   uuid: string;
   email: string;
-  role: 'USER' | 'ADMIN';
+  role: string;
   isEnabled: boolean;
   permissions: string[];
 }
@@ -83,7 +83,7 @@ export function getUser(uuid: string): Promise<UserResponse> {
   return fetchApi<UserResponse>(`/users/${uuid}`);
 }
 
-export function createUser(email: string, role: 'ADMIN' | 'USER' = 'USER'): Promise<UserResponse> {
+export function createUser(email: string, role = 'USER'): Promise<UserResponse> {
   return fetchApi<UserResponse>('/users', { method: 'POST', body: JSON.stringify({ email, role }) });
 }
 
