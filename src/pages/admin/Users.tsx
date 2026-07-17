@@ -116,7 +116,7 @@ export default function Users() {
                   <label htmlFor="add-email">Email address</label>
                   <input className="input" id="add-email" type="email" value={formEmail} onChange={(e) => setFormEmail(e.target.value)} placeholder="user@example.com" />
                 </div>
-                <div className="field">
+                <div className="field" style={{ marginTop: 'var(--space-4)' }}>
                   <label htmlFor="add-role">Role</label>
                   <div className="select-wrapper">
                     <select className="select" id="add-role" value={formRole} onChange={(e) => setFormRole(e.target.value)}>
@@ -137,7 +137,7 @@ export default function Users() {
                   <label htmlFor="edit-email">Email address</label>
                   <input className="input" id="edit-email" type="email" value={formEmail} onChange={(e) => setFormEmail(e.target.value)} />
                 </div>
-                <div className="field">
+                <div className="field" style={{ marginTop: 'var(--space-4)' }}>
                   <label htmlFor="edit-role">Role</label>
                   <div className="select-wrapper">
                     <select className="select" id="edit-role" value={formRole} onChange={(e) => setFormRole(e.target.value)}>
