@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import SkipLink from './components/SkipLink';
 import Nav from './components/Nav';
-import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminLayout from './components/AdminLayout';
 import Home from './pages/Home';
@@ -32,7 +31,6 @@ export default function App() {
             <Route path="/admin/settings" element={<ProtectedRoute><AdminLayout><Settings /></AdminLayout></ProtectedRoute>} />
           </Routes>
         </div>
-        <Footer />
       </AuthProvider>
     </BrowserRouter>
   );
