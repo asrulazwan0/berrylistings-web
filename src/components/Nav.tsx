@@ -1,8 +1,12 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function Nav() {
   const { isAuthenticated } = useAuth();
+  const { pathname } = useLocation();
+
+  if (pathname.startsWith('/admin')) return null;
+
   return (
     <header className="nav">
       <div className="container nav__inner">
