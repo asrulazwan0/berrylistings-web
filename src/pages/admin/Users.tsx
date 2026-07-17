@@ -104,7 +104,7 @@ export default function Users() {
       {/* ---- Modal ---- */}
       {modal.mode && (
         <div className="modal-overlay" onClick={() => setModal({ mode: null, user: null })}>
-          <div className="modal-panel" style={{ maxWidth: 420 }} onClick={(e) => e.stopPropagation()}>
+          <div className="modal-panel" style={{ maxWidth: 420, padding: 'var(--space-6)' }} onClick={(e) => e.stopPropagation()}>
             {modal.mode === 'add' && (
               <>
                 <h2 style={{ margin: 0 }}>Add user</h2>
