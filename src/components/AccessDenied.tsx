@@ -1,4 +1,10 @@
 export default function AccessDenied() {
+  const handleLogout = () => {
+    localStorage.removeItem('berry_jwt');
+    localStorage.removeItem('berry_user');
+    window.location.href = '/login';
+  };
+
   return (
     <main className="admin-main" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '40vh', textAlign: 'center' }}>
       <svg width="48" height="48" viewBox="0 0 24 24" fill="none" style={{ color: 'var(--color-fg-subtle)', marginBottom: 'var(--space-4)' }} aria-hidden="true">
@@ -8,6 +14,7 @@ export default function AccessDenied() {
       <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-fg-muted)', marginTop: 'var(--space-2)', maxWidth: 360 }}>
         You don't have permission to view this page. Contact an admin if you think this is a mistake.
       </p>
+      <button className="btn btn--ghost btn--sm" type="button" onClick={handleLogout} style={{ marginTop: 'var(--space-5)' }}>Sign out</button>
     </main>
   );
 }
