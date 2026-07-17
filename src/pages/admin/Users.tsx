@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { getUsers, createUser, updateUser, deleteUser, fetchApi, type UserItem } from '../../api/client';
 import '../../styles/admin.css';
 
@@ -7,6 +7,7 @@ function getMyEmail(): string {
 }
 
 type ModalMode = 'add' | 'edit' | 'toggle' | 'delete' | null;
+const PER_PAGE = 10;
 
 export default function Users() {
   const myEmail = getMyEmail();
@@ -17,6 +18,8 @@ export default function Users() {
   const [modal, setModal] = useState<{ mode: ModalMode; user: UserItem | null }>({ mode: null, user: null });
   const [formEmail, setFormEmail] = useState('');
   const [formRole, setFormRole] = useState('USER');
+  const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
 
   const fetchUsers = () => {
     setLoading(true);
@@ -27,30 +30,29 @@ export default function Users() {
     fetchApi<{ data: { name: string }[] }>('/roles').then((r) => setAvailableRoles(r.data.map((x) => x.name))).catch(() => {});
   }, []);
 
+  const filtered = useMemo(() => users.filter((u) => !search || u.email.toLowerCase().includes(search.toLowerCase()) || u.role.toLowerCase().includes(search.toLowerCase())), [users, search]);
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
+  const paged = useMemo(() => filtered.slice((page - 1) * PER_PAGE, page * PER_PAGE), [filtered, page]);
+
   const openModal = (mode: ModalMode, user: UserItem | null = null) => {
     if (mode === 'edit' && user) { setFormEmail(user.email); setFormRole(user.role); }
     if (mode === 'add') { setFormEmail(''); setFormRole('USER'); }
-    setModal({ mode, user });
-    setError(null);
+    setModal({ mode, user }); setError(null);
   };
-
   const handleAdd = async () => {
     try { await createUser(formEmail.trim(), formRole); fetchUsers(); setModal({ mode: null, user: null }); }
     catch (e) { setError((e as Error).message); }
   };
-
   const handleEdit = async () => {
     if (!modal.user) return;
     try { await updateUser(modal.user.uuid, { email: formEmail, role: formRole }); fetchUsers(); setModal({ mode: null, user: null }); }
     catch (e) { setError((e as Error).message); }
   };
-
   const handleToggle = async () => {
     if (!modal.user) return;
     try { await updateUser(modal.user.uuid, { isEnabled: !modal.user.isEnabled }); fetchUsers(); setModal({ mode: null, user: null }); }
     catch (e) { setError((e as Error).message); }
   };
-
   const handleDelete = async () => {
     if (!modal.user) return;
     try { await deleteUser(modal.user.uuid); fetchUsers(); setModal({ mode: null, user: null }); }
@@ -68,44 +70,49 @@ export default function Users() {
 
       {error && <p style={{ color: 'var(--color-destructive)', marginBottom: 'var(--space-4)' }} role="alert">{error}</p>}
 
-      {loading ? (
-        <p style={{ textAlign: 'center', padding: 'var(--space-8)', color: 'var(--color-fg-muted)' }}>Loading…</p>
-      ) : (
-        <div className="card" style={{ overflow: 'hidden' }}>
-          <table className="data-table">
-            <thead><tr><th>Email</th><th>Role</th><th>Status</th><th style={{ width: 120, textAlign: 'right' }}>Actions</th></tr></thead>
-            <tbody>
-              {users.length === 0 ? <tr><td colSpan={4} style={{ textAlign: 'center', padding: 'var(--space-8)', color: 'var(--color-fg-muted)' }}>No users found.</td></tr> :
-                users.map((u) => {
-                  const self = isSelf(u.email);
-                  return (
-                    <tr key={u.uuid}>
-                      <td><strong>{u.email}</strong>{self && <span style={{ fontSize: 'var(--text-xs)', color: 'var(--color-fg-subtle)', marginLeft: 6 }}>(you)</span>}</td>
-                      <td><span className={`badge ${u.role === 'ADMIN' ? 'badge--success' : 'badge--muted'}`}>{u.role}</span></td>
-                      <td><span className="chip">{u.isEnabled ? 'Enabled' : 'Disabled'}</span></td>
-                      <td style={{ textAlign: 'right' }}>
-                        <div style={{ display: 'flex', gap: 'var(--space-1)', justifyContent: 'flex-end' }}>
-                          <button className="icon-btn" type="button" aria-label="Edit user" onClick={() => openModal('edit', u)} title="Edit">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M11 2l3 3-8 8H3v-3l8-8Z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" /></svg>
-                          </button>
-                          <button className="icon-btn" type="button" aria-label={`${u.isEnabled ? 'Disable' : 'Enable'} user`} onClick={() => openModal('toggle', u)} disabled={self} title={self ? 'Cannot modify yourself' : (u.isEnabled ? 'Disable' : 'Enable')}>
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 4v4M8 12h.01" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" /></svg>
-                          </button>
-                          <button className="icon-btn" type="button" aria-label="Delete user" onClick={() => openModal('delete', u)} disabled={self} style={self ? undefined : {}} title={self ? 'Cannot delete yourself' : 'Delete'}>
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 4.5h10M6.5 4.5V3a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1.5M4.5 4.5l.6 8.5a1 1 0 0 0 1 .9h3.8a1 1 0 0 0 1-.9l.6-8.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })
-              }
-            </tbody>
-          </table>
+      <div className="card" style={{ overflow: 'hidden' }}>
+        <div style={{ padding: 'var(--space-4) var(--space-5)', borderBottom: '1px solid var(--color-border)' }}>
+          <input className="input" type="text" placeholder="Search by email or role…" value={search} onChange={(e) => { setSearch(e.target.value); setPage(1); }} style={{ maxWidth: 320 }} />
         </div>
-      )}
 
-      {/* ---- Modal ---- */}
+        {loading ? <p style={{ textAlign: 'center', padding: 'var(--space-8)', color: 'var(--color-fg-muted)' }}>Loading…</p> : (
+          <>
+            <table className="data-table">
+              <thead><tr><th>Email</th><th>Role</th><th>Status</th><th style={{ width: 120, textAlign: 'right' }}>Actions</th></tr></thead>
+              <tbody>
+                {paged.length === 0 ? <tr><td colSpan={4} style={{ textAlign: 'center', padding: 'var(--space-8)', color: 'var(--color-fg-muted)' }}>No users found.</td></tr> :
+                  paged.map((u) => {
+                    const self = isSelf(u.email);
+                    return (
+                      <tr key={u.uuid}>
+                        <td><strong>{u.email}</strong>{self && <span style={{ fontSize: 'var(--text-xs)', color: 'var(--color-fg-subtle)', marginLeft: 6 }}>(you)</span>}</td>
+                        <td><span className={`badge ${u.role === 'ADMIN' ? 'badge--success' : 'badge--muted'}`}>{u.role}</span></td>
+                        <td><span className="chip">{u.isEnabled ? 'Enabled' : 'Disabled'}</span></td>
+                        <td style={{ textAlign: 'right' }}>
+                          <div style={{ display: 'flex', gap: 'var(--space-1)', justifyContent: 'flex-end' }}>
+                            <button className="icon-btn" type="button" aria-label="Edit user" onClick={() => openModal('edit', u)} title="Edit"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M11 2l3 3-8 8H3v-3l8-8Z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" /></svg></button>
+                            <button className="icon-btn" type="button" aria-label={`${u.isEnabled ? 'Disable' : 'Enable'} user`} onClick={() => openModal('toggle', u)} disabled={self}><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 4v4M8 12h.01" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" /></svg></button>
+                            <button className="icon-btn" type="button" aria-label="Delete user" onClick={() => openModal('delete', u)} disabled={self}><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 4.5h10M6.5 4.5V3a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1.5M4.5 4.5l.6 8.5a1 1 0 0 0 1 .9h3.8a1 1 0 0 0 1-.9l.6-8.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" /></svg></button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })
+                }
+              </tbody>
+            </table>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 'var(--space-4) var(--space-5)', borderTop: '1px solid var(--color-border)', fontSize: 'var(--text-sm)', color: 'var(--color-fg-muted)' }}>
+              <span>Showing {(page - 1) * PER_PAGE + 1}–{Math.min(page * PER_PAGE, filtered.length)} of {filtered.length} users</span>
+              <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
+                <button className="btn btn--ghost btn--sm" type="button" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>Previous</button>
+                <span style={{ padding: '4px 8px' }}>Page {page} of {totalPages}</span>
+                <button className="btn btn--ghost btn--sm" type="button" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>Next</button>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+
       {modal.mode && (
         <div className="modal-overlay" onClick={() => setModal({ mode: null, user: null })}>
           <div className="modal-panel" style={{ maxWidth: 420, padding: 'var(--space-6)' }} onClick={(e) => e.stopPropagation()}>
@@ -118,11 +125,7 @@ export default function Users() {
                 </div>
                 <div className="field" style={{ marginTop: 'var(--space-4)' }}>
                   <label htmlFor="add-role">Role</label>
-                  <div className="select-wrapper">
-                    <select className="select" id="add-role" value={formRole} onChange={(e) => setFormRole(e.target.value)}>
-                      {availableRoles.map((r) => <option key={r} value={r}>{r}</option>)}
-                    </select>
-                  </div>
+                  <div className="select-wrapper"><select className="select" id="add-role" value={formRole} onChange={(e) => setFormRole(e.target.value)}>{availableRoles.map((r) => <option key={r} value={r}>{r}</option>)}</select></div>
                 </div>
                 <div style={{ display: 'flex', gap: 'var(--space-3)', marginTop: 'var(--space-5)' }}>
                   <button className="btn btn--primary btn--sm" type="button" onClick={handleAdd} disabled={!formEmail.trim()}>Create</button>
@@ -139,11 +142,8 @@ export default function Users() {
                 </div>
                 <div className="field" style={{ marginTop: 'var(--space-4)' }}>
                   <label htmlFor="edit-role">Role</label>
-                  <div className="select-wrapper">
-                    <select className="select" id="edit-role" value={formRole} onChange={(e) => setFormRole(e.target.value)}>
-                      {availableRoles.map((r) => <option key={r} value={r}>{r}</option>)}
-                    </select>
-                  </div>
+                  <div className="select-wrapper"><select className="select" id="edit-role" value={formRole} onChange={(e) => setFormRole(e.target.value)} disabled={isSelf(modal.user?.email ?? '')}>{availableRoles.map((r) => <option key={r} value={r}>{r}</option>)}</select></div>
+                  {isSelf(modal.user?.email ?? '') && <span style={{ fontSize: 'var(--text-xs)', color: 'var(--color-fg-subtle)' }}>You cannot change your own role.</span>}
                 </div>
                 <div style={{ display: 'flex', gap: 'var(--space-3)', marginTop: 'var(--space-5)' }}>
                   <button className="btn btn--primary btn--sm" type="button" onClick={handleEdit}>Save</button>
@@ -154,9 +154,7 @@ export default function Users() {
             {modal.mode === 'toggle' && modal.user && (
               <>
                 <h2 style={{ margin: 0 }}>{modal.user.isEnabled ? 'Disable' : 'Enable'} user</h2>
-                <p style={{ marginTop: 'var(--space-3)', color: 'var(--color-fg-muted)' }}>
-                  Are you sure you want to {modal.user.isEnabled ? 'disable' : 'enable'} <strong>{modal.user.email}</strong>?
-                </p>
+                <p style={{ marginTop: 'var(--space-3)', color: 'var(--color-fg-muted)' }}>Are you sure you want to {modal.user.isEnabled ? 'disable' : 'enable'} <strong>{modal.user.email}</strong>?</p>
                 <div style={{ display: 'flex', gap: 'var(--space-3)', marginTop: 'var(--space-5)' }}>
                   <button className="btn btn--primary btn--sm" type="button" onClick={handleToggle}>Confirm</button>
                   <button className="btn btn--ghost btn--sm" type="button" onClick={() => setModal({ mode: null, user: null })}>Cancel</button>
@@ -166,9 +164,9 @@ export default function Users() {
             {modal.mode === 'delete' && modal.user && (
               <>
                 <h2 style={{ margin: 0 }}>Delete user</h2>
-                <p style={{ marginTop: 'var(--space-3)', color: 'var(--color-destructive)' }}>
-                  This will permanently delete <strong>{modal.user.email}</strong> and all their data. This cannot be undone.
-                </p>
+                <div style={{ marginTop: 'var(--space-4)', padding: 'var(--space-4)', background: 'var(--color-bg-alt)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--color-border)' }}>
+                  <p style={{ margin: 0, fontSize: 'var(--text-sm)' }}>This will permanently delete <strong>{modal.user.email}</strong> and all associated data. This cannot be undone.</p>
+                </div>
                 <div style={{ display: 'flex', gap: 'var(--space-3)', marginTop: 'var(--space-5)' }}>
                   <button className="btn btn--danger btn--sm" type="button" onClick={handleDelete}>Delete permanently</button>
                   <button className="btn btn--ghost btn--sm" type="button" onClick={() => setModal({ mode: null, user: null })}>Cancel</button>
