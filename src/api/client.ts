@@ -7,6 +7,7 @@ export interface UserItem {
   email: string;
   role: 'USER' | 'ADMIN';
   isEnabled: boolean;
+  permissions: string[];
 }
 
 export interface UsersResponse {
