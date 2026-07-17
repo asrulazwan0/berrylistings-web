@@ -4,10 +4,10 @@ import AccessDenied from './AccessDenied';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  requireAdmin?: boolean;
+  scope?: string;
 }
 
-export default function ProtectedRoute({ children, requireAdmin }: ProtectedRouteProps) {
+export default function ProtectedRoute({ children, scope }: ProtectedRouteProps) {
   const { isAuthenticated, isLoading, user } = useAuth();
 
   if (isLoading) {
@@ -18,7 +18,7 @@ export default function ProtectedRoute({ children, requireAdmin }: ProtectedRout
     return <Navigate to="/login" replace />;
   }
 
-  if (requireAdmin && user?.role !== 'ADMIN') {
+  if (scope && user && !(user.permissions ?? []).includes(scope)) {
     return <AccessDenied />;
   }
 

@@ -22,10 +22,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </Link>
         <nav className="admin-nav" aria-label="Admin">
           <Link to="/admin">Overview</Link>
-          <Link to="/admin/listings">Listings</Link>
-          <Link to="/admin/users">Users</Link>
+          {(user?.permissions ?? []).includes('properties:create') && <Link to="/admin/listings">Listings</Link>}
+          {(user?.permissions ?? []).includes('users:view') && <Link to="/admin/users">Users</Link>}
           <Link to="/admin/settings">Settings</Link>
-          <Link to="/admin/roles">Roles</Link>
+          {(user?.permissions ?? []).includes('users:edit') && <Link to="/admin/roles">Roles</Link>}
         </nav>
         {user && (
           <div style={{ marginTop: 'auto', paddingTop: 'var(--space-5)', borderTop: '1px solid var(--color-border)' }}>

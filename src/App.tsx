@@ -26,11 +26,11 @@ export default function App() {
             <Route path="/listings" element={<Listings />} />
             <Route path="/property/:id" element={<PropertyDetail />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/admin" element={<ProtectedRoute requireAdmin><AdminLayout><Overview /></AdminLayout></ProtectedRoute>} />
-            <Route path="/admin/listings" element={<ProtectedRoute requireAdmin><AdminLayout><AdminDashboard /></AdminLayout></ProtectedRoute>} />
-            <Route path="/admin/users" element={<ProtectedRoute requireAdmin><AdminLayout><Users /></AdminLayout></ProtectedRoute>} />
-            <Route path="/admin/settings" element={<ProtectedRoute requireAdmin><AdminLayout><Settings /></AdminLayout></ProtectedRoute>} />
-            <Route path="/admin/roles" element={<ProtectedRoute requireAdmin><AdminLayout><Roles /></AdminLayout></ProtectedRoute>} />
+            <Route path="/admin" element={<ProtectedRoute scope="properties:create"><AdminLayout><Overview /></AdminLayout></ProtectedRoute>} />
+            <Route path="/admin/listings" element={<ProtectedRoute scope="properties:create"><AdminLayout><AdminDashboard /></AdminLayout></ProtectedRoute>} />
+            <Route path="/admin/users" element={<ProtectedRoute scope="users:view"><AdminLayout><Users /></AdminLayout></ProtectedRoute>} />
+            <Route path="/admin/settings" element={<ProtectedRoute><AdminLayout><Settings /></AdminLayout></ProtectedRoute>} />
+            <Route path="/admin/roles" element={<ProtectedRoute scope="users:edit"><AdminLayout><Roles /></AdminLayout></ProtectedRoute>} />
           </Routes>
         </div>
       </AuthProvider>

@@ -32,7 +32,7 @@ export default function Login() {
       }
       const { data } = await res.json();
       localStorage.setItem('berry_jwt', data.token);
-      localStorage.setItem('berry_user', JSON.stringify({ name: email.split('@')[0], email, role: data.user.role }));
+      localStorage.setItem('berry_user', JSON.stringify({ name: email.split('@')[0], email, role: data.user.role, permissions: data.user.permissions }));
       window.location.href = '/admin';
     } catch (err: unknown) {
       setError((err as Error).message);

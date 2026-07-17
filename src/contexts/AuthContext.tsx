@@ -10,7 +10,7 @@ import { postAuthGoogle } from '../api/client';
 
 interface AuthState {
   token: string | null;
-  user: { name: string; email: string; picture?: string; role?: string } | null;
+  user: { name: string; email: string; picture?: string; role?: string; permissions?: string[] } | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   login: (credential: string) => Promise<void>;
@@ -44,6 +44,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         email: payload.email ?? '',
         picture: payload.picture ?? undefined,
         role: payload.role ?? undefined,
+        permissions: Array.isArray(payload.permissions) ? payload.permissions : undefined,
       };
 
       localStorage.setItem(TOKEN_KEY, jwt);
