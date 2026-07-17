@@ -3,7 +3,7 @@ import { fetchApi } from '../../api/client';
 import '../../styles/admin.css';
 
 const ALL_PERMISSIONS = [
-  'properties:create', 'properties:edit', 'properties:delete',
+  'properties:view', 'properties:create', 'properties:edit', 'properties:delete',
   'users:view', 'users:create', 'users:edit', 'users:delete',
 ];
 
