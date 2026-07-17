@@ -641,8 +641,8 @@ button:disabled {
 }
 
 .badge--pending {
-  background: var(--color-accent-light);
-  color: var(--color-primary-dark);
+  background: #fef3c7;
+  color: #92400e;
 }
 
 .badge--muted {
