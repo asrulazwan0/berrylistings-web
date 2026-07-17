@@ -47,7 +47,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <button className="nav__menu-btn admin-menu-btn" type="button" aria-label="Open admin menu" aria-controls="admin-sidebar" aria-expanded={sidebarOpen} onClick={() => setSidebarOpen((o) => !o)}>
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /></svg>
             </button>
-            <div><div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-fg-subtle)' }}>Berry Admin</div><h1 style={{ fontSize: 'var(--text-md)', fontWeight: 600 }}>Dashboard</h1></div>
+            <div><div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-fg-subtle)' }}>Berry Admin</div><span style={{ fontSize: 'var(--text-md)', fontWeight: 600 }}>Dashboard</span></div>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
             <Link className="btn btn--ghost btn--sm" to="/">View site</Link>
