@@ -12,6 +12,7 @@ import Overview from './pages/admin/Overview';
 import AdminDashboard from './pages/admin/Dashboard';
 import Users from './pages/admin/Users';
 import Settings from './pages/admin/Settings';
+import Roles from './pages/admin/Roles';
 
 export default function App() {
   return (
@@ -29,6 +30,7 @@ export default function App() {
             <Route path="/admin/listings" element={<ProtectedRoute><AdminLayout><AdminDashboard /></AdminLayout></ProtectedRoute>} />
             <Route path="/admin/users" element={<ProtectedRoute><AdminLayout><Users /></AdminLayout></ProtectedRoute>} />
             <Route path="/admin/settings" element={<ProtectedRoute><AdminLayout><Settings /></AdminLayout></ProtectedRoute>} />
+            <Route path="/admin/roles" element={<ProtectedRoute><AdminLayout><Roles /></AdminLayout></ProtectedRoute>} />
           </Routes>
         </div>
       </AuthProvider>

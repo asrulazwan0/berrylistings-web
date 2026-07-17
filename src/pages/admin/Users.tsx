@@ -176,33 +176,6 @@ export default function Users() {
           </div>
         </div>
       )}
-
-      {/* ---- Role Management ---- */}
-      <section style={{ marginTop: 'var(--space-8)' }}>
-        <h2 style={{ fontSize: 'var(--text-lg)', fontWeight: 600 }}>Role management</h2>
-        <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-fg-subtle)' }}>Default permissions per role. Custom user permissions can be set individually in the future.</p>
-        <div style={{ display: 'grid', gap: 'var(--space-4)', marginTop: 'var(--space-4)', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))' }}>
-          {(['ADMIN', 'USER'] as const).map((role) => (
-            <div className="card" key={role} style={{ padding: 'var(--space-5)' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-3)' }}>
-                <h3 style={{ margin: 0, fontSize: 'var(--text-md)' }}>{role === 'ADMIN' ? 'Admin' : 'User'}</h3>
-                <span className={`badge ${role === 'ADMIN' ? 'badge--success' : 'badge--muted'}`}>{role}</span>
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-1)' }}>
-                {['properties:create', 'properties:edit', 'properties:delete', 'users:view', 'users:create', 'users:edit', 'users:delete'].map((perm) => {
-                  const hasIt = role === 'ADMIN' ? true : ['properties:create', 'properties:edit'].includes(perm);
-                  return (
-                    <div key={perm} style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', fontSize: 'var(--text-sm)', color: hasIt ? 'var(--color-fg)' : 'var(--color-fg-subtle)' }}>
-                      <span>{hasIt ? '✓' : '✕'}</span>
-                      <span>{perm}</span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
     </main>
   );
 }

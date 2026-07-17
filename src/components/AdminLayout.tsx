@@ -25,6 +25,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <Link to="/admin/listings">Listings</Link>
           <Link to="/admin/users">Users</Link>
           <Link to="/admin/settings">Settings</Link>
+          <Link to="/admin/roles">Roles</Link>
         </nav>
         {user && (
           <div style={{ marginTop: 'auto', paddingTop: 'var(--space-5)', borderTop: '1px solid var(--color-border)' }}>
