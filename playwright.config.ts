@@ -9,14 +9,7 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
   projects: [
-    {
-      name: 'setup', testMatch: /auth\.setup\.ts/,
-    },
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'], storageState: 'tests/.auth/user.json' },
-      dependencies: ['setup'],
-    },
+    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
   ],
   webServer: {
     command: 'npm run dev -- --host',
