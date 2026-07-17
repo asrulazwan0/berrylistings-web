@@ -75,14 +75,17 @@ export default function Roles() {
       {error && <p style={{ color: 'var(--color-destructive)', marginBottom: 'var(--space-4)' }} role="alert">{error}</p>}
 
       {showNew && (
-        <div className="card" style={{ padding: 'var(--space-4)', marginBottom: 'var(--space-5)' }}>
-          <div style={{ display: 'flex', gap: 'var(--space-3)', alignItems: 'flex-end' }}>
-            <div className="field" style={{ flex: 1 }}>
+        <div className="modal-overlay" onClick={() => { setShowNew(false); setNewName(''); }}>
+          <div className="modal-panel" style={{ maxWidth: 420, padding: 'var(--space-6)' }} onClick={(e) => e.stopPropagation()}>
+            <h2 style={{ margin: 0 }}>Create role</h2>
+            <div className="field" style={{ marginTop: 'var(--space-4)' }}>
               <label htmlFor="new-role-name">Role name</label>
               <input className="input" id="new-role-name" type="text" value={newName} onChange={(e) => setNewName(e.target.value)} placeholder="e.g. EDITOR" />
             </div>
-            <button className="btn btn--primary btn--sm" type="button" onClick={createRole} disabled={!newName.trim()}>Create</button>
-            <button className="btn btn--ghost btn--sm" type="button" onClick={() => { setShowNew(false); setNewName(''); }}>Cancel</button>
+            <div style={{ display: 'flex', gap: 'var(--space-3)', marginTop: 'var(--space-5)' }}>
+              <button className="btn btn--primary btn--sm" type="button" onClick={createRole} disabled={!newName.trim()}>Create</button>
+              <button className="btn btn--ghost btn--sm" type="button" onClick={() => { setShowNew(false); setNewName(''); }}>Cancel</button>
+            </div>
           </div>
         </div>
       )}
