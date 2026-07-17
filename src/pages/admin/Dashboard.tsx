@@ -15,7 +15,9 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [page, setPage] = useState(1);
   const [formOpen, setFormOpen] = useState(false);
+  const PER_PAGE = 10;
   const [editing, setEditing] = useState<Property | null>(null);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState<string | null>(null);
@@ -57,6 +59,13 @@ export default function AdminDashboard() {
     });
   }, [properties, search, statusFilter]);
 
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
+  const paged = useMemo(() => filtered.slice((page - 1) * PER_PAGE, page * PER_PAGE), [filtered, page]);
+
+  // Reset page on filter change
+  const setSearchAndReset = (v: string) => { setSearch(v); setPage(1); };
+  const setStatusAndReset = (v: string) => { setStatusFilter(v); setPage(1); };
+
   const stats = useMemo(() => ({
     total: properties.length,
     active: properties.filter((p) => p.status === 'ACTIVE').length,
@@ -85,11 +94,11 @@ export default function AdminDashboard() {
           <div className="table-toolbar">
             <div className="field" style={{ minWidth: 260 }}>
               <label htmlFor="admin-search" className="visually-hidden">Search listings</label>
-              <input className="input" id="admin-search" type="text" placeholder="Search by title, city, or agent" value={search} onChange={(e) => setSearch(e.target.value)} />
+              <input className="input" id="admin-search" type="text" placeholder="Search by title, city, or agent" value={search} onChange={(e) => setSearchAndReset(e.target.value)} />
             </div>
             <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
               {['all', 'active', 'pending', 'draft'].map((s) => (
-                <button key={s} className="chip" type="button" aria-pressed={statusFilter === s} onClick={() => setStatusFilter(s)}>{s.charAt(0).toUpperCase() + s.slice(1)}</button>
+                <button key={s} className="chip" type="button" aria-pressed={statusFilter === s} onClick={() => setStatusAndReset(s)}>{s.charAt(0).toUpperCase() + s.slice(1)}</button>
               ))}
             </div>
           </div>
@@ -103,7 +112,7 @@ export default function AdminDashboard() {
                 <tbody>
                   {filtered.length === 0 ? (
                     <tr><td colSpan={5} style={{ textAlign: 'center', padding: 'var(--space-8)', color: 'var(--color-fg-muted)' }}>No listings found.</td></tr>
-                  ) : filtered.slice(0, 10).map((p) => (
+                  ) : paged.map((p) => (
                     <tr key={p.uuid}>
                       <td>
                         <div className="row-title-cell">
@@ -138,7 +147,12 @@ export default function AdminDashboard() {
           )}
 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'var(--space-5)', fontSize: 'var(--text-sm)', color: 'var(--color-fg-muted)' }}>
-            <span>Showing {Math.min(filtered.length, 10)} of {filtered.length} listings</span>
+            <span>Showing {(page - 1) * PER_PAGE + 1}–{Math.min(page * PER_PAGE, filtered.length)} of {filtered.length} listings</span>
+            <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
+              <button className="btn btn--ghost btn--sm" type="button" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>Previous</button>
+              <span style={{ padding: '4px 8px' }}>Page {page} of {totalPages}</span>
+              <button className="btn btn--ghost btn--sm" type="button" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>Next</button>
+            </div>
           </div>
         </div>
       </main>
