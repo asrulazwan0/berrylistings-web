@@ -20,16 +20,18 @@ export default function App() {
       <AuthProvider>
         <SkipLink />
         <Nav />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/listings" element={<Listings />} />
-          <Route path="/property/:id" element={<PropertyDetail />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/admin" element={<ProtectedRoute><AdminLayout><Overview /></AdminLayout></ProtectedRoute>} />
-          <Route path="/admin/listings" element={<ProtectedRoute><AdminLayout><AdminDashboard /></AdminLayout></ProtectedRoute>} />
-          <Route path="/admin/users" element={<ProtectedRoute><AdminLayout><Users /></AdminLayout></ProtectedRoute>} />
-          <Route path="/admin/settings" element={<ProtectedRoute><AdminLayout><Settings /></AdminLayout></ProtectedRoute>} />
-        </Routes>
+        <div style={{ flex: 1 }}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/listings" element={<Listings />} />
+            <Route path="/property/:id" element={<PropertyDetail />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/admin" element={<ProtectedRoute><AdminLayout><Overview /></AdminLayout></ProtectedRoute>} />
+            <Route path="/admin/listings" element={<ProtectedRoute><AdminLayout><AdminDashboard /></AdminLayout></ProtectedRoute>} />
+            <Route path="/admin/users" element={<ProtectedRoute><AdminLayout><Users /></AdminLayout></ProtectedRoute>} />
+            <Route path="/admin/settings" element={<ProtectedRoute><AdminLayout><Settings /></AdminLayout></ProtectedRoute>} />
+          </Routes>
+        </div>
         <Footer />
       </AuthProvider>
     </BrowserRouter>
